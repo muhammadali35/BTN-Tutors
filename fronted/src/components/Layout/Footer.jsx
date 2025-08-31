@@ -15,7 +15,6 @@ const Footer = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
     if (validateEmail(email)) {
       setIsValid(true);
       toast.success('Thank you! Your subscription was successful.', {
@@ -28,10 +27,7 @@ const Footer = () => {
         progress: undefined,
         theme: "colored",
       });
-      // Reset form after success
-      setTimeout(() => {
-        setEmail('');
-      }, 1000);
+      setTimeout(() => setEmail(''), 1000);
     } else {
       setIsValid(false);
       toast.error('Please enter a valid email address.', {
@@ -50,203 +46,117 @@ const Footer = () => {
   const handleEmailChange = (e) => {
     const value = e.target.value;
     setEmail(value);
-    // Validate email as user types
-    if (value === '') {
-      setIsValid(true);
-    } else {
-      setIsValid(validateEmail(value));
-    }
+    setIsValid(value === '' ? true : validateEmail(value));
   };
 
+  // ✅ Quick Links Data
+  const quickLinks = [
+    { name: 'About Us', path: '/about' },
+    { name: 'Contact Us', path: '/contact' },
+    { name: 'Careers', path: '/careers' },
+    { name: 'News & Articles', path: '/news' },
+    { name: 'Private Policy', path: '/privacy' },
+  ];
+
+  // ✅ Services Data
+  const services = [
+    { name: 'Home Tuition', path: '/home-tuition' },
+    { name: 'O/A Level', path: '/o-a-level' },
+    { name: 'Home Tutor', path: '/home-tutor' },
+    { name: 'Spoken English', path: '/spoken-english' },
+    { name: 'Online Tutoring', path: '/online-tutoring' },
+  ];
+
+  // ✅ Social Icons Data
+  const socials = [
+    { icon: Twitter, color: 'bg-blue-700 hover:bg-yellow-400', path: '/twitter' },
+    { icon: Facebook, color: 'bg-blue-700 hover:bg-yellow-400', path: '/facebook' },
+    { icon: Instagram, color: 'bg-blue-700 hover:bg-yellow-400', path: '/instagram' },
+    { icon: Linkedin, color: 'bg-blue-700 hover:bg-yellow-400', path: '/linkedin' },
+  ];
+
   return (
-    <footer className="bg-blue-600 text-white py-12  relative">
-      {/* Toast Container */}
+    <footer className="bg-blue-800 text-white py-12 relative">
       <ToastContainer />
 
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          
           {/* Logo and Description */}
           <div className="col-span-1 md:col-span-1">
             <div className="flex flex-col items-center md:items-start">
               <div className="mb-4">
-                <svg 
-                  width="100" 
-                  height="100" 
-                  viewBox="0 0 100 100" 
-                  fill="none" 
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="text-white"
-                >
+                <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white">
                   <path d="M50 20C40 20 30 28 30 38V60H70V38C70 28 60 20 50 20Z" fill="currentColor"/>
                   <path d="M30 60L50 80L70 60" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   <circle cx="50" cy="30" r="10" fill="currentColor"/>
                 </svg>
               </div>
-              <Link 
-                to="/" 
-                className="text-lg font-semibold mb-2 hover:text-yellow-400 transition-colors duration-300 cursor-pointer"
-              >
+              <Link to="/" className="text-lg font-semibold mb-2 hover:text-yellow-400 transition-colors duration-300">
                 Best Teachers Network
               </Link>
-              <p className="text-white text-center md:text-left mb-6 max-w-xs hover:text-yellow-400 transition-colors duration-300 cursor-pointer">
+              <p className="text-white text-center md:text-left mb-6 max-w-xs hover:text-yellow-400 transition-colors duration-300">
                 Best Teachers Network is the best Online Academy in Pakistan for home tuition.
               </p>
+
+              {/* Social Icons using map */}
               <div className="flex space-x-4 justify-center md:justify-start">
-                <Link 
-                  to="/twitter" 
-                  className="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center hover:bg-yellow-400 transition-all duration-300 transform hover:scale-110 group"
-                >
-                  <Twitter className="w-5 h-5 group-hover:text-white" />
-                </Link>
-                <Link 
-                  to="/facebook" 
-                  className="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center hover:bg-yellow-400 transition-all duration-300 transform hover:scale-110 group"
-                >
-                  <Facebook className="w-5 h-5 group-hover:text-white" />
-                </Link>
-                <Link 
-                  to="/instagram" 
-                  className="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center hover:bg-yellow-400 transition-all duration-300 transform hover:scale-110 group"
-                >
-                  <Instagram className="w-5 h-5 group-hover:text-white" />
-                </Link>
-                <Link 
-                  to="/linkedin" 
-                  className="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center hover:bg-yellow-400 transition-all duration-300 transform hover:scale-110 group"
-                >
-                  <Linkedin className="w-5 h-5 group-hover:text-white" />
-                </Link>
+                {socials.map((social, index) => (
+                  <Link
+                    key={index}
+                    to={social.path}
+                    className={`w-10 h-10 ${social.color} rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110 group `}
+                  >
+                    <social.icon className="w-5 h-5 group-hover:text-white" />
+                  </Link>
+                ))}
               </div>
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div className='py-4'>
+          {/* Quick Links using map */}
+          <div className="py-4">
             <h3 className="text-lg font-semibold mb-4 flex items-center">
               <span className="hover:text-yellow-400 transition-colors duration-300 cursor-pointer">Quick Links</span>
-              <span className="w-12 h-0.5 bg-blue-400 ml-2"></span>
+              <span className="w-12 h-1 bg-white ml-2"></span>
             </h3>
-            <ul className="space-y-3">
-              <li>
-                <Link 
-                  to="/about" 
-                  className="text-white hover:text-yellow-400 transition-all duration-300 block group"
-                >
-                  <span className="relative">
-                    About Us
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
-                  </span>
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/contact" 
-                  className="text-white hover:text-yellow-400 transition-all duration-300 block group"
-                >
-                  <span className="relative">
-                    Contact Us
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
-                  </span>
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/careers" 
-                  className="text-white hover:text-yellow-400 transition-all duration-300 block group"
-                >
-                  <span className="relative">
-                    Careers
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
-                  </span>
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/news" 
-                  className="text-white hover:text-yellow-400 transition-all duration-300 block group"
-                >
-                  <span className="relative">
-                    News & Articles
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
-                  </span>
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/privacy" 
-                  className="text-white hover:text-yellow-400 transition-all duration-300 block group"
-                >
-                  <span className="relative">
-                    Private Policy
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
-                  </span>
-                </Link>
-              </li>
+            <ul className="space-y-3 ">
+              {quickLinks.map((link, index) => (
+                <li key={index}>
+                  <Link
+                    to={link.path}
+                    className="text-white hover:text-yellow-400 transition-all duration-300 block group "
+                  >
+                    <span className="relative">
+                      {link.name}
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Services */}
-          <div className='py-4'>
+          {/* Services using map */}
+          <div className="py-4">
             <h3 className="text-lg font-semibold mb-4 flex items-center">
               <span className="hover:text-yellow-400 transition-colors duration-300 cursor-pointer">Services</span>
-              <span className="w-12 h-0.5 bg-blue-400 ml-2"></span>
+              <span className="w-12 h-1 bg-white ml-2"></span>
             </h3>
             <ul className="space-y-3">
-              <li>
-                <Link 
-                  to="/home-tuition" 
-                  className="text-white hover:text-yellow-400 transition-all duration-300 block group"
-                >
-                  <span className="relative">
-                    Home Tuition
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
-                  </span>
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/o-a-level" 
-                  className="text-white hover:text-yellow-400 transition-all duration-300 block group"
-                >
-                  <span className="relative">
-                    O/A Level
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
-                  </span>
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/home-tutor" 
-                  className="text-white hover:text-yellow-400 transition-all duration-300 block group"
-                >
-                  <span className="relative">
-                    Home Tutor
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
-                  </span>
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/spoken-english" 
-                  className="text-white hover:text-yellow-400 transition-all duration-300 block group"
-                >
-                  <span className="relative">
-                    Spoken English
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
-                  </span>
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/online-tutoring" 
-                  className="text-white hover:text-yellow-400 transition-all duration-300 block group"
-                >
-                  <span className="relative">
-                    Online Tutoring
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
-                  </span>
-                </Link>
-              </li>
+              {services.map((service, index) => (
+                <li key={index}>
+                  <Link
+                    to={service.path}
+                    className="text-white hover:text-yellow-400 transition-all duration-300 block group"
+                  >
+                    <span className="relative">
+                      {service.name}
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -254,9 +164,9 @@ const Footer = () => {
           <div className="relative py-4">
             <h3 className="text-lg font-semibold mb-4 flex items-center">
               <span className="hover:text-yellow-400 transition-colors duration-300 cursor-pointer">Newsletter</span>
-              <span className="w-12 h-0.5 bg-blue-400 ml-2"></span>
+              <span className="w-12 h-1 bg-white ml-2"></span>
             </h3>
-            
+
             <form onSubmit={handleSubmit} className="space-y-3">
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-300" />
@@ -272,16 +182,12 @@ const Footer = () => {
                   }`}
                   required
                 />
-                {email && !isValid && (
-                  <XCircle className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-red-400" />
-                )}
-                {email && isValid && (
-                  <CheckCircle className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-green-400" />
-                )}
+                {email && !isValid && <XCircle className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-red-400" />}
+                {email && isValid && <CheckCircle className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-green-400" />}
               </div>
               <button
                 type="submit"
-                className="w-full bg-blue-600 hover:bg-yellow-400 hover:text-white text-white font-medium py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className="w-full bg-yellow-400  hover:bg-yellow-500 hover:text-white text-white font-medium py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
               >
                 SUBSCRIBE
               </button>
@@ -293,17 +199,14 @@ const Footer = () => {
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-blue-700 mt-8 pt-6 text-center text-sm">
-          <p className="text-white  transition-colors duration-300">
+        <div className="border-t border-blue-500 mt-8 pt-6 text-center text-sm">
+          <p className="text-white transition-colors duration-300">
             Copyright © 2024{' '}
-            <Link 
-              to="/" 
-              className="font-bold text-yellow-300 hover:text-white transition-colors duration-300"
-            >
+            <Link to="/" className="font-bold text-yellow-400 hover:text-white transition-colors duration-300">
               Pakistan Academy
             </Link>{' '}
             | All rights reserved | Designed by{' '}
-            <Link to="/" className="font-bold text-yellow-300 hover:text-white transition-colors duration-300">IT Advice</Link>
+            <Link to="/" className="font-bold text-yellow-400 hover:text-white transition-colors duration-300">IT Advice</Link>
           </p>
         </div>
       </div>
