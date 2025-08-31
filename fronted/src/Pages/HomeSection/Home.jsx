@@ -11,9 +11,9 @@ const Home = () => {
     <Hero/>
     <ServicesCard/>
     <EnrollSection/>
-    <Institute/>
     <WhyChooseUs/>
     <TuitionModes/>
+    <Institute/>
     </>
   )
 }

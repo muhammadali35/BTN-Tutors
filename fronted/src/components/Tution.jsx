@@ -20,24 +20,24 @@ function TuitionModes() {
       <div className="max-w-6xl mx-auto px-6">
         {/* Title */}
         <div className="text-center mb-14">
-          <h2 className="text-4xl md:text-5xl font-extrabold text-gray-800">
-            Tuition Modes We Offer
-          </h2>
-          <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-blue-800 mb-4 leading-tight">
+          Tuition Modes <span className="text-yellow-400">We Offer</span>
+        </h2>
+          <p className="text-gray-600 mb-12 max-w-2xl mx-auto text-lg animate-fade-in-delay">
             We provide flexible options to match your learning style — choose between
             home tutoring or online sessions.
           </p>
         </div>
 
         {/* Cards */}
-        <div className="grid md:grid-cols-2 gap-10">
+        <div className="grid md:grid-cols-2 gap-10  ">
           {modes.map((mode, i) => (
             <div
               key={i}
-              className="group bg-blue-50 hover:bg-blue-100 rounded-2xl p-10 shadow-md hover:shadow-xl transition duration-300 text-center"
+              className="group   rounded-2xl p-10 shadow-md hover:shadow-xl transition duration-300 text-center border border-yellow-400"
             >
               <div className="flex justify-center mb-6">{mode.icon}</div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-4">
+              <h3 className="text-2xl font-bold text-gray-800 mb-4 group-hover:text-yellow-400 transition-colors duration-300">
                 {mode.title}
               </h3>
               <p className="text-gray-600">{mode.desc}</p>
