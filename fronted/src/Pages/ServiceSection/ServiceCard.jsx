@@ -58,11 +58,8 @@ function ServicesCard() {
           <p className="uppercase tracking-widest text-yellow-400 text-lg md:text-xl font-semibold md:font-medium font-sans">
             Our Programs
           </p>
-<<<<<<< HEAD
-          <h2 className="text-3xl sm:text-4xl md:text-4xl font-bold mt-3 font-sans text-blue-800">
-=======
+
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mt-3 font-sans text-blue-400">
->>>>>>> 131716f7d5c3a29af74cc5245ed4a47f126b9b68
             Tutoring <span className="text-yellow-400">Services</span>
           </h2>
           <p className="mt-4 md:mt-5 text-gray-600 max-w-xl md:max-w-2xl mx-auto leading-relaxed font-sans">
