@@ -2,6 +2,7 @@ import React from 'react'
 import About from './About'
 import Breadcrumb from '../../components/Breadcrumb'
 import ForStudents from './ForStudents'
+import TuitionModes from '../../components/Tution'
 
 const AboutSection = () => {
   return (
@@ -9,6 +10,7 @@ const AboutSection = () => {
        <Breadcrumb page='About us'/>
       <About/>
       <ForStudents/>
+       <TuitionModes />
     </>
   )
 }
