@@ -3,14 +3,10 @@ import { Link } from "react-router-dom";
 
 function Breadcrumb({ page }) {
   return (
-    <section className="relative bg-blue-500 text-white">
+    <section className="relative bg-blue-500 text-white ">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-30">
-        <img
-          src="https://i.ibb.co/5n2zq5j/bg-pattern.png" 
-          alt="pattern"
-          className="w-full h-full object-cover"
-        />
+    
       </div>  
 
       {/* Content */}

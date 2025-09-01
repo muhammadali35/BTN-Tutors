@@ -71,7 +71,7 @@ const Hero = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ type: "spring", stiffness: 80, damping: 20 }}
       >
-        <h1 className="text-4xl md:text-4xl font-bold text-white drop-shadow-lg leading-tight">
+        <h1 className="text-4xl md:text-4xl font-bold text-white drop-shadow-lg leading-tight  mt-8">
           {heroSlides[index].title} <span className="text-yellow-400">{heroSlides[index].subTitle}</span>
         </h1>
 
