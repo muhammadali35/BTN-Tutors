@@ -43,24 +43,26 @@ function ServicesCard() {
   };
 
   return (
-    <section ref={ref} className="relative bg-white text-gray-800">
-      <div className="max-w-7xl mx-auto px-6 pt-16 pb-24">
+    <section
+      ref={ref}
+      className="relative bg-white text-gray-800 font-sans"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-10 pb-16 md:pt-16 md:pb-24">
         {/* Title */}
         <motion.div
           initial="hidden"
           animate={controls}
           variants={variants}
-          className="text-center mb-16"
+          className="text-center mb-10 md:mb-16"
         >
-          <p className="uppercase tracking-widest text-blue-600 text-sm font-medium">
+          <p className="uppercase tracking-widest text-yellow-400 text-lg md:text-xl font-semibold md:font-medium font-sans">
             Our Programs
           </p>
-          <h2 className="text-4xl md:text-5xl font-extrabold mt-3">
-            Tutoring <span className="text-yellow-500">Services</span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mt-3 font-sans text-blue-800">
+            Tutoring <span className="text-yellow-400">Services</span>
           </h2>
-          <p className="mt-5 text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Tailored tutoring designed for academic success—empowering learners
-            to achieve confidence, mastery, and top performance.
+          <p className="mt-4 md:mt-5 text-gray-600 max-w-xl md:max-w-2xl mx-auto leading-relaxed font-sans">
+            Tailored tutoring designed for academic success—empowering learners to achieve confidence, mastery, and top performance.
           </p>
         </motion.div>
 
@@ -69,36 +71,36 @@ function ServicesCard() {
           initial="hidden"
           animate={controls}
           variants={variants}
-          className="grid md:grid-cols-2 gap-10"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-10"
         >
           {services.map((item, i) => (
             <motion.div
               key={i}
               variants={variants}
-              // whileHover={{ scale: 1.05, y: -8 }}
               transition={{ type: "spring", stiffness: 200 }}
-              className="bg-white rounded-2xl shadow-lg hover:shadow-2xl overflow-hidden group border-2 border-yellow-300"
+              className="bg-white rounded-2xl shadow-lg hover:shadow-2xl overflow-hidden group border-2 border-yellow-300 flex flex-col"
             >
               {/* Image */}
-              <motion.div className="w-full h-64 overflow-hidden">
+              <motion.div className="w-full h-48 sm:h-64 overflow-hidden">
                 <motion.img
                   src={item.img}
                   alt={item.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition duration-500"
                   whileHover={{ scale: 1.1 }}
                   transition={{ duration: 0.5 }}
                 />
               </motion.div>
 
               {/* Content */}
-              <div className="p-6 text-center">
+              <div className="p-4 sm:p-6 text-center flex-1 flex flex-col justify-center font-sans">
                 <motion.h3
                   whileHover={{ color: "#f59e0b" }}
-                  className="text-2xl font-bold text-gray-800 mb-3 transition"
+                  className="text-xl sm:text-2xl font-bold text-gray-800 mb-2 sm:mb-3 transition font-sans"
+                  style={{ color: '#f59e0b' }}
                 >
                   {item.title}
                 </motion.h3>
-                <p className="text-gray-600 leading-relaxed">{item.desc}</p>
+                <p className="text-gray-600 leading-relaxed font-sans">{item.desc}</p>
               </div>
             </motion.div>
           ))}
@@ -109,12 +111,12 @@ function ServicesCard() {
           initial="hidden"
           animate={controls}
           variants={variants}
-          className="text-center mt-20"
+          className="text-center mt-14 md:mt-20"
         >
           <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
             <Link
               to="/student-enroll"
-              className="inline-block px-10 py-4 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-lg font-bold shadow-xl hover:from-blue-700 hover:to-indigo-700 transition"
+              className="px-8 py-3 bg-yellow-400 text-white font-semibold rounded-lg shadow hover:scale-105 hover:bg-yellow-500 transition"
             >
               Enroll Now
             </Link>

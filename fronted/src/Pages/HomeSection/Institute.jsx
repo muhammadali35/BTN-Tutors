@@ -45,14 +45,15 @@ const Institute = () => {
       <div className="container mx-auto px-4">
         {/* Header Section */}
         <div className="text-center mb-12 max-w-4xl mx-auto">
-          <h3 className="text-sm font-semibold text-blue-800 uppercase tracking-wider mb-2">
+          <h3 className="uppercase tracking-widest text-yellow-400 text-lg md:text-xl font-semibold md:font-medium font-sans">
             Our Educators
           </h3>
+          
           <h2 className="text-3xl md:text-4xl font-bold text-blue-800 mb-4 leading-tight">
-            Expert Teachers from Pakistan's Premier Educational Institutions
+            Expert Teachers from Pakistan's Premier <span className='text-yellow-400'>Educational Institutions</span>
           </h2>
           <div className="w-24 h-0.5 bg-yellow-400 mx-auto mb-6"></div>
-          <p className="text-gray-700 text-lg leading-relaxed">
+          <p className="mt-4 md:mt-5 text-gray-600 max-w-xl md:max-w-2xl mx-auto leading-relaxed font-sans">
             Our teaching staff comprises highly qualified educators from Pakistan's most prestigious schools and colleges, 
             bringing years of experience and expertise to deliver exceptional education.
           </p>
@@ -67,7 +68,7 @@ const Institute = () => {
               role="figure"
               aria-label={institution.alt}
             >
-              <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-yellow-400 hover:border-blue-500">
+              <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-yellow-400 ">
                 <img 
                   src={institution.logo} 
                   alt={institution.alt} 
