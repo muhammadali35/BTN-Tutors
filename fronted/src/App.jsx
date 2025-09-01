@@ -17,11 +17,13 @@ import ContactPage from "./Pages/Contact/ContactPage";
 import About from "./Pages/About/About";
 import AboutSection from "./Pages/About/AboutSection";
 import TutorRegistration from "./features/Forms/TutorForm";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <>
       <BrowserRouter>
+          <ScrollToTop />
         <Navbar />
         <Routes>
           <Route path="/home" element={<Home />} />
