@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import TermsModal from '../TermsModell';
+import Breadcrumb from '../../components/Breadcrumb';
 
 const TutorRegistration = () => {
   const [formData, setFormData] = useState({
@@ -179,23 +180,7 @@ const validateForm = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {/* Header */}
-      <header
-        className="relative overflow-hidden"
-        style={{
-          backgroundImage: 'url("https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?auto=format&fit=crop&w=1200&q=80")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
-        <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 relative z-10 text-center">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white drop-shadow-lg">
-            Tutor Registration
-          </h1>
-          <p className="text-white/90 mt-2 text-sm sm:text-base">Join our network of qualified teachers</p>
-        </div>
-      </header>
-
+        <Breadcrumb page={'Tutor Registration'}/>
       {/* Main Form */}
       <main className="container mx-auto px-4 py-6 sm:py-10 max-w-5xl">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">

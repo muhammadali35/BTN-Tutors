@@ -9,21 +9,24 @@ import hero3 from "../../assets/successStu.jpg";
 
 const heroSlides = [
   {
-    title: "Empowering Students with Expert Tutors",
+    title: "Empowering Students",
+    subTitle:"with Expert Tutors",
     desc: "Discover the best Home and Online Tutors for all Subjects and Classes near your area Today!",
     btn1: { text: "Find a Tutor", link: "/student-enroll" },
     btn2: { text: "Become a Tutor", link: "/tutors" },
     bg: hero1,
   },
   {
-    title: "Learn Anytime, Anywhere",
+    title: "Learn Anytime, ",
+     subTitle:"Anywhere",
     desc: "Join our network of tutors and students. Access quality education from the comfort of your home.",
     btn1: { text: "Join Now", link: "/student-enroll" },
     btn2: { text: "Teach with Us", link: "/tutors" },
     bg: hero2,
   },
   {
-    title: "Your Success, Our Mission",
+    title: "Your Success,",
+     subTitle:" Our Mission",
     desc: "We provide demo classes and expert guidance to help you succeed in your academic journey.",
     btn1: { text: "Book Demo", link: "/student-enroll" },
     btn2: { text: "Apply as Tutor", link: "/tutors" },
@@ -57,7 +60,7 @@ const Hero = () => {
             transition={{ duration: 1, ease: "easeInOut" }}
           />
         ))}
-        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="absolute inset-0 bg-black/40"></div>
       </div>
 
       {/* Slide Content */}
@@ -68,8 +71,8 @@ const Hero = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ type: "spring", stiffness: 80, damping: 20 }}
       >
-        <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg leading-tight">
-          {heroSlides[index].title}
+        <h1 className="text-4xl md:text-4xl font-bold text-white drop-shadow-lg leading-tight">
+          {heroSlides[index].title} <span className="text-yellow-400">{heroSlides[index].subTitle}</span>
         </h1>
 
         <p className="mt-4 text-lg md:text-xl text-gray-100 drop-shadow">
