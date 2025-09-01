@@ -20,7 +20,7 @@ function TuitionModes() {
       <div className="max-w-6xl mx-auto px-6">
         {/* Title */}
         <div className="text-center mb-14">
-            <h2 className="text-3xl md:text-4xl font-bold text-blue-800 mb-4 leading-tight">
+            <h2 className="text-3xl md:text-4xl font-bold text-blue-500 mb-4 leading-tight">
           Tuition Modes <span className="text-yellow-400">We Offer</span>
         </h2>
           <p className="text-gray-600 mb-12 max-w-2xl mx-auto text-lg animate-fade-in-delay">
