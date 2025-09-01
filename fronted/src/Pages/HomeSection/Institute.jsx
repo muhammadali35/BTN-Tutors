@@ -5,6 +5,7 @@ import LahorGrammar from "../../assets/LahoreGrammar.png"
 import CitySchool from "../../assets/CitySchool.png"
 import KingColloege from "../../assets/King.png"
 import MilestoneCollege from "../../assets/MilestoneCollege.png"
+import aitchisonCollege from "../../assets/aitchisoncollege.png"
 
 const Institute = () => {
   const institutions = [
@@ -37,6 +38,11 @@ const Institute = () => {
       name: "Milestone", 
       alt: "Milestone College", 
       logo: MilestoneCollege
+    },
+    { 
+      name: "Aitchison College", 
+      alt: "Aitchison College", 
+      logo: aitchisonCollege
     }
   ];
 
@@ -49,7 +55,7 @@ const Institute = () => {
             Our Educators
           </h3>
           
-          <h2 className="text-3xl md:text-4xl font-bold text-blue-800 mb-4 leading-tight">
+          <h2 className="text-3xl md:text-4xl font-bold text-blue-500 mb-4 leading-tight">
             Expert Teachers from Pakistan's Premier <span className='text-yellow-400'>Educational Institutions</span>
           </h2>
           <div className="w-24 h-0.5 bg-yellow-400 mx-auto mb-6"></div>

@@ -69,14 +69,14 @@ const Footer = () => {
 
   // ✅ Social Icons Data
   const socials = [
-    { icon: Twitter, color: 'bg-blue-700 hover:bg-yellow-400', path: '/twitter' },
-    { icon: Facebook, color: 'bg-blue-700 hover:bg-yellow-400', path: '/facebook' },
-    { icon: Instagram, color: 'bg-blue-700 hover:bg-yellow-400', path: '/instagram' },
-    { icon: Linkedin, color: 'bg-blue-700 hover:bg-yellow-400', path: '/linkedin' },
+    { icon: Twitter, color: 'bg-blue-400 hover:bg-yellow-400', path: '/twitter' },
+    { icon: Facebook, color: 'bg-blue-400 hover:bg-yellow-400', path: '/facebook' },
+    { icon: Instagram, color: 'bg-blue-400 hover:bg-yellow-400', path: '/instagram' },
+    { icon: Linkedin, color: 'bg-blue-400 hover:bg-yellow-400', path: '/linkedin' },
   ];
 
   return (
-    <footer className="bg-blue-800 text-white py-12 relative">
+    <footer className="bg-blue-500 text-white py-12 relative">
       <ToastContainer />
 
       <div className="container mx-auto px-4">
@@ -169,7 +169,7 @@ const Footer = () => {
 
             <form onSubmit={handleSubmit} className="space-y-3">
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-300" />
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-500" />
                 <input
                   type="email"
                   placeholder="Enter Email Address"
@@ -178,7 +178,7 @@ const Footer = () => {
                   className={`w-full pl-12 pr-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white bg-opacity-10 backdrop-blur-sm placeholder-white transition-all duration-300 ${
                     email && !isValid 
                       ? 'border-red-500 focus:ring-red-500' 
-                      : 'border-blue-600 focus:ring-blue-500'
+                      : 'border-blue-500 focus:ring-blue-500'
                   }`}
                   required
                 />
@@ -187,7 +187,7 @@ const Footer = () => {
               </div>
               <button
                 type="submit"
-                className="w-full bg-yellow-400  hover:bg-yellow-500 hover:text-white text-white font-medium py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className="w-full bg-yellow-400  hover:bg-yellow-400 hover:text-white text-white font-medium py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
               >
                 SUBSCRIBE
               </button>
@@ -199,7 +199,7 @@ const Footer = () => {
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-blue-500 mt-8 pt-6 text-center text-sm">
+        <div className="border-t border-blue-300 mt-8 pt-6 text-center text-sm">
           <p className="text-white transition-colors duration-300">
             Copyright © 2024{' '}
             <Link to="/" className="font-bold text-yellow-400 hover:text-white transition-colors duration-300">

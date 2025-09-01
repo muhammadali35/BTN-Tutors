@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function Breadcrumb({ page }) {
   return (
-    <section className="relative bg-blue-600 text-white">
+    <section className="relative bg-blue-500 text-white">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-30">
         <img
@@ -11,12 +11,12 @@ function Breadcrumb({ page }) {
           alt="pattern"
           className="w-full h-full object-cover"
         />
-      </div>
+      </div>  
 
       {/* Content */}
-      <div className="relative z-10 max-w-6xl mx-auto px-6 py-16 text-center">
-        <h1 className="text-4xl md:text-5xl font-bold">{page}</h1>
-        <div className="flex justify-center items-center gap-2 mt-4 text-lg font-medium">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 py-20 text-center">
+        <h1 className="text-4xl md:text-4xl font-bold">{page}</h1>
+        <div className="flex justify-center items-center gap-4 mt-4 text-lg font-medium">
           <Link to="/" className="hover:text-yellow-400 transition">Home</Link>
           <span className="text-yellow-400">🎓</span>
           <span className="text-yellow-400">{page}</span>
