@@ -195,7 +195,7 @@ function Navbar() {
               </div>
             )}
 
-            {activeTab === "guest" && (
+            {/* {activeTab === "guest" && (
               <div>
                 <h3 className="text-xl font-semibold text-gray-800 mb-4">
                   Guest Login
@@ -204,7 +204,7 @@ function Navbar() {
                   <Mail size={18} className="text-yellow-500" /> Continue with Google
                 </button>
               </div>
-            )}
+            )} */}
           </div>
         </div>
       )}

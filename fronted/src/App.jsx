@@ -16,6 +16,7 @@ import GuestSignup from "./features/Forms/GuestSignup";
 import ContactPage from "./Pages/Contact/ContactPage";
 import About from "./Pages/About/About";
 import AboutSection from "./Pages/About/AboutSection";
+import TutorRegistration from "./features/Forms/TutorForm";
 
 function App() {
   return (
@@ -31,7 +32,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} /> */}
           <Route path="/student-enroll" element={<StudentRegistration />}/>
-          <Route path="/tutor-register" element={<TutorForm />}/>
+          <Route path="/tutor-register" element={<TutorRegistration />}/>
           <Route path="/guest-register" element={<GuestSignup />}/>
           <Route path="/contact" element={<ContactPage />}/>
           <Route path="/about" element={<AboutSection />}/>
