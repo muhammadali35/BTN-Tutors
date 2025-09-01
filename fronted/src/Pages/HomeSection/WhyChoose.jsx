@@ -33,7 +33,7 @@ const WhyChooseUs = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-14 bg-white">
       <div className="container mx-auto px-6 lg:px-12 text-center">
         {/* Heading */}
         <h2 className="text-3xl md:text-4xl font-bold text-blue-500 mb-4 leading-tight">
@@ -44,12 +44,12 @@ const WhyChooseUs = () => {
         </p>
 
         {/* Features Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {features.map((feature, index) => (
             <Link
               key={index}
               to={feature.link}
-              className={`flex flex-col items-center p-6 bg-white rounded-xl shadow-md border border-yellow-400 transition-all duration-500 transform ${
+              className={`flex flex-col items-center p-4 bg-white rounded-xl shadow-md border border-yellow-400 transition-all duration-500 transform ${
                 hoveredIndex === index ? 'scale-105' : 'hover:scale-102'
               } hover:shadow-xl`}
               onMouseEnter={() => setHoveredIndex(index)}
