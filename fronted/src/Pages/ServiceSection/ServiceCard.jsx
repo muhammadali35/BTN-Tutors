@@ -1,35 +1,23 @@
+// src/components/ServicesCard.jsx
 import { Link } from "react-router-dom";
-import { motion , useAnimation } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 import matric from "../../assets/tutorStu2.webp";
 import Alevel from "../../assets/Olevel1.jpg";
 
-const services = [
-  {
-    title: "O & A Levels",
-    desc: "Cambridge/Edexcel syllabi, exam strategies, and topic-wise masterclasses.",
-    img: Alevel,
-  },
-  {
-    title: "Matric (9th & 10th)",
-    desc: "Board-focused prep, past papers, and timed mocks for top grades.",
-    img: matric,
-  },
-];
-
 function ServicesCard() {
   const controls = useAnimation();
   const [ref, inView] = useInView({
-    triggerOnce: false,  // ✅ run again whenever in view
-    threshold: 0.3,      // ✅ 30% visible then trigger
+    triggerOnce: false,
+    threshold: 0.3,
   });
 
   useEffect(() => {
     if (inView) {
       controls.start("visible");
     } else {
-      controls.start("hidden"); // ✅ reset animation when out of view
+      controls.start("hidden");
     }
   }, [inView, controls]);
 
@@ -42,10 +30,24 @@ function ServicesCard() {
     },
   };
 
+  // ✅ Data array for services
+  const services = [
+    {
+      title: "O & A Levels",
+      desc: "Cambridge/Edexcel syllabi, exam strategies, and topic-wise masterclasses.",
+      img: Alevel,
+    },
+    {
+      title: "Matric (9th & 10th)",
+      desc: "Board-focused prep, past papers, and timed mocks for top grades.",
+      img: matric,
+    },
+  ];
+
   return (
     <section
       ref={ref}
-      className="relative bg-white text-gray-800 font-sans"
+      className="relative bg-white font-sans"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-10 pb-16 md:pt-16 md:pb-24">
         {/* Title */}
@@ -55,71 +57,67 @@ function ServicesCard() {
           variants={variants}
           className="text-center mb-10 md:mb-16"
         >
-          <p className="uppercase tracking-widest text-yellow-400 text-lg md:text-xl font-semibold md:font-medium font-sans">
+          <p className="uppercase tracking-widest text-yellow-400 text-lg md:text-xl font-semibold">
             Our Programs
           </p>
-
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mt-3 font-sans text-blue-400">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-blue-500 mt-3">
             Tutoring <span className="text-yellow-400">Services</span>
           </h2>
-          <p className="mt-4 md:mt-5 text-gray-600 max-w-xl md:max-w-2xl mx-auto leading-relaxed font-sans">
+          <p className="mt-4 text-gray-600 max-w-xl md:max-w-2xl mx-auto leading-relaxed">
             Tailored tutoring designed for academic success—empowering learners to achieve confidence, mastery, and top performance.
           </p>
         </motion.div>
 
-        {/* Cards */}
+        {/* Cards Grid */}
         <motion.div
           initial="hidden"
           animate={controls}
           variants={variants}
           className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-10"
         >
-          {services.map((item, i) => (
+          {services.map((service, index) => (
             <motion.div
-              key={i}
+              key={index}
               variants={variants}
-              transition={{ type: "spring", stiffness: 200 }}
-              className="bg-white rounded-2xl shadow-lg hover:shadow-2xl overflow-hidden group border-2 border-yellow-300 flex flex-col"
+              className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 group h-80 sm:h-96"
             >
-              {/* Image */}
-              <motion.div className="w-full h-48 sm:h-64 overflow-hidden">
-                <motion.img
-                  src={item.img}
-                  alt={item.title}
-                  className="w-full h-full object-cover transition duration-500"
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.5 }}
-                />
-              </motion.div>
+              {/* Background Image */}
+              <img
+                src={service.img}
+                alt={service.title}
+                className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
+              />
+
+              {/* Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
 
               {/* Content */}
-              <div className="p-4 sm:p-6 text-center flex-1 flex flex-col justify-center font-sans">
-                <motion.h3
-                  whileHover={{ color: "#f59e0b" }}
-                  className="text-xl sm:text-2xl font-bold text-gray-800 mb-2 sm:mb-3 transition font-sans"
-                  style={{ color: '#f59e0b' }}
-                >
-                  {item.title}
-                </motion.h3>
-                <p className="text-gray-600 leading-relaxed font-sans">{item.desc}</p>
+              <div className="relative z-10 flex flex-col items-center justify-center h-full px-6 text-center text-white">
+                <h3 className="text-2xl font-bold mb-3 text-yellow-400 group-hover:text-yellow-300 transition-colors duration-300">
+                  {service.title}
+                </h3>
+                <p className="text-white/90 leading-relaxed text-sm sm:text-base px-4">
+                  {service.desc}
+                </p>
               </div>
             </motion.div>
           ))}
         </motion.div>
 
-        {/* CTA bottom */}
+        {/* CTA */}
         <motion.div
           initial="hidden"
           animate={controls}
           variants={variants}
           className="text-center mt-14 md:mt-20"
         >
-          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link
               to="/student-enroll"
-              className="px-8 py-3 bg-yellow-400 text-white font-semibold rounded-lg shadow hover:scale-105 hover:bg-yellow-500 transition"
+              className="inline-block px-8 py-3 bg-yellow-400 text-white font-semibold rounded-lg shadow-lg hover:bg-yellow-500 hover:scale-105 transition-transform duration-300"
             >
-              Enroll Now
+               📚 Enroll Now
             </Link>
           </motion.div>
         </motion.div>

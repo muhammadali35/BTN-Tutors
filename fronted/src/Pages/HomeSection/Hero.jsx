@@ -41,7 +41,7 @@ const Hero = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % heroSlides.length);
-    }, 5000);
+    }, 2000);
     return () => clearInterval(interval);
   }, []);
 
