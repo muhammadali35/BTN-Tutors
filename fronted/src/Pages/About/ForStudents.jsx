@@ -6,39 +6,30 @@ import {
   Wallet,
   MessageSquare,
 } from "lucide-react";
-import students from "../../assets/Studnet.jpg";
+import students from "../../assets/Studnet1.jpg";
 
 const features = [
   {
     icon: Users,
     title: "Connect With Tutors",
-    desc: "At eTutors.pk, you will connect with verified home/online tutors that exactly match your learning and geographic requirements. Our portal helps you find the most suitable tutor quickly.",
-  },
-  {
-    icon: ClipboardList,
-    title: "Hassle Free Process",
-    desc: 'Choose your tutor, click "Hire This Tutor," select the subject, and send your request. We’ll handle the rest and connect you both seamlessly.',
+    desc: "BTN Network, you will connect with verified home/online tutors that exactly match your learning and geographic requirements. Our portal helps you find the most suitable tutor quickly.",
   },
   {
     icon: ShieldCheck,
     title: "Quality Guaranteed",
     desc: "Each tutor undergoes a rigorous screening process to earn a verified badge. We check all identity and educational documents before approval.",
   },
-  {
-    icon: Wallet,
-    title: "No Service Charges",
-    desc: "Free registration, no hidden charges! We don’t take any fee from students for using our platform.",
-  },
+
   {
     icon: MessageSquare,
     title: "Forum Access",
-    desc: "eTutors.pk offers a dedicated Q&A forum where students can ask any educational questions. Tutors are always ready to guide you, plus access to a huge collection of resources.",
+    desc: "BTN Network offers a dedicated Q&A forum where students can ask any educational questions. Tutors are always ready to guide you, plus access to a huge collection of resources.",
   },
 ];
 
 const ForStudents = () => {
   return (
-    <section className="bg-white py-16 px-6 md:px-12 lg:px-20 font-sans">
+    <section className="bg-white py-10 px-6 md:px-12 lg:px-20 font-sans">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         {/* Left Content */}
         <div>
