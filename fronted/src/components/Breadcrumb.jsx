@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function Breadcrumb({ page }) {
   return (
-    <section className="relative bg-blue-500 text-white ">
+    <section className="relative bg-blue-500 text-white mt-12 ">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-30">
     

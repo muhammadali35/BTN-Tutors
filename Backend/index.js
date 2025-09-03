@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import studentRouter from "./routes/studentRoute.js";
 import tutorRouter from "./routes/tutorRoute.js";
 import serviceRouter from "./routes/serviceRoute.js";
+import contactRouter from "./routes/contactRoutes.js";
 import cors from "cors";
 
 
@@ -35,6 +36,7 @@ mongoose
 app.use("/api", studentRouter);
 app.use("/api", serviceRouter);
 app.use("/api", tutorRouter);
+app.use("/api", contactRouter);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

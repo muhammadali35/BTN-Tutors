@@ -157,7 +157,7 @@ const handleSubmit = async (e) => {
     toast.dismiss();
     toast.success("✅ Application submitted! We will verify and contact you soon.", {
       position: "top-right",
-      autoClose: 6000,
+      autoClose: 2000,
       theme: "colored",
       style: { background: "#10b981", color: "white" },
     });
