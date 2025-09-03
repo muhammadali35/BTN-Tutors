@@ -24,4 +24,24 @@ const findService=await serviceModel.find()
       findService
      })
 }
-
+export const updateServices=async(req,res)=>{
+const {id,title,description}=req.body
+  try {
+    const updateService=await serviceModel.findByIdAndUpdate(id,{
+        title,
+        description
+    },{new:true})
+    res.status(200).json({message:"Service updated successfully",updateService})
+  } catch (error) {
+    res.status(404).json({message:"interal server error"})
+  }
+}
+export const deleteServices=async(req,res)=>{
+const {id}=req.body
+  try {
+    const deleteService=await serviceModel.findByIdAndDelete(id)
+    res.status(200).json({message:"Service deleted successfully",deleteService})
+  } catch (error) {
+    res.status(404).json({message:"interal server error"})
+  }
+}

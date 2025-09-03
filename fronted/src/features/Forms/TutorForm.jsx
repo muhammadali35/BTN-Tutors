@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import TermsModal from '../TermsModell';
 import Breadcrumb from '../../components/Breadcrumb';
+import axios from 'axios'
 
 const TutorRegistration = () => {
   const [formData, setFormData] = useState({
@@ -14,7 +15,6 @@ const TutorRegistration = () => {
     password: '',
     mobile: '',
     whatsapp: '',
-    province: '',
     city: '',
     address: '',
     institution: '',
@@ -88,7 +88,6 @@ const TutorRegistration = () => {
     else if (formData.password.length < 8) newErrors.password = 'Password must be at least 8 characters';
     else if (!formData.mobile.trim()) newErrors.mobile = 'Mobile number is required';
     else if (!formData.whatsapp.trim()) newErrors.whatsapp = 'WhatsApp number is required';
-    else if (!formData.province.trim()) newErrors.province = 'Province is required';
     else if (!formData.city.trim()) newErrors.city = 'City is required';
     else if (!formData.address.trim()) newErrors.address = 'Home address is required';
     else if (formData.subjects.length === 0 && !formData.otherSubjects.trim())
@@ -118,55 +117,97 @@ const TutorRegistration = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setErrors({});
-    if (validateForm()) {
-      setIsSubmitting(true);
-      setTimeout(() => {
-        toast.dismiss();
-        toast.success('✅ Application submitted! We will verify and contact you soon.', {
-          position: 'top-right',
-          autoClose: 6000,
-          theme: 'colored',
-          style: { background: '#10b981', color: 'white' },
-        });
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setErrors({});
 
-        setIsSubmitting(false);
-        setFormData({
-          name: '',
-          email: '',
-          password: '',
-          mobile: '',
-          whatsapp: '',
-          province: '',
-          city: '',
-          address: '',
-          institution: '',
-          experience: '',
-          bio: '',
-          subjects: [],
-          otherSubjects: '',
-          teachingMode: '',
-          profilePic: null,
-          idCardFront: null,
-          idCardBack: null,
-          Intermediate: null,
-          bachelorDoc: null,
-          mphilDoc: null,
-          showOtherInput: false,
-        });
+  if (!validateForm()) {
+    console.log("Validation failed, check errors above");
+    return;
+  }
 
-        // Reset all file inputs
-        ['profilePic', 'idCardFront', 'idCardBack', 'Intermediate', 'bachelorDoc', 'mphilDoc'].forEach(id => {
-          const el = document.getElementById(id);
-          if (el) el.value = '';
-        });
-      }, 2000);
+  setIsSubmitting(true);
+
+  try {
+    const data = new FormData();
+    Object.keys(formData).forEach((key) => {
+      if (formData[key] !== null && formData[key] !== "") {
+        if (Array.isArray(formData[key])) {
+          formData[key].forEach((item) => data.append(key, item));
+        } else {
+          data.append(key, formData[key]);
+        }
+      }
+    });
+
+    console.log("FormData contents:");
+    for (let pair of data.entries()) {
+      console.log(`${pair[0]}: ${pair[1]}`);
     }
-  };
 
-  const provinces = ['Punjab', 'Sindh', 'Khyber Pakhtunkhwa', 'Balochistan', 'Gilgit-Baltistan', 'Azad Kashmir'];
+    const response = await axios.post("http://localhost:5000/api/tutorReg", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      timeout: 30000, // 30 seconds timeout
+    });
+
+    console.log("Server response:", response.data);
+
+    toast.dismiss();
+    toast.success("✅ Application submitted! We will verify and contact you soon.", {
+      position: "top-right",
+      autoClose: 6000,
+      theme: "colored",
+      style: { background: "#10b981", color: "white" },
+    });
+
+    // Reset states
+    setFormData({
+      name: "",
+      email: "",
+      password: "",
+      mobile: "",
+      whatsapp: "",
+      city: "",
+      address: "",
+      institution: "",
+      experience: "",
+      bio: "",
+      subjects: [],
+      otherSubjects: "",
+      teachingMode: "",
+      profilePic: null,
+      idCardFront: null,
+      idCardBack: null,
+      Intermediate: null,
+      bachelorDoc: null,
+      mphilDoc: null,
+      showOtherInput: false,
+    });
+
+    // Reset file inputs
+    ["profilePic", "idCardFront", "idCardBack", "Intermediate", "bachelorDoc", "mphilDoc"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.value = "";
+    });
+
+    setIsSubmitting(false);
+  } catch (error) {
+    console.error("❌ Tutor Registration Error:", error);
+    const errorMessage = error.response?.data?.message || error.message || "Failed to submit form. Please try again.";
+    toast.error(errorMessage, {
+      position: "top-center",
+      autoClose: 4000,
+      theme: "colored",
+      style: { background: "#E23E32", color: "white", top: "80px" },
+    });
+    setErrors({ message: errorMessage });
+    setIsSubmitting(false);
+  }
+};
+
+
   const cities = ['Lahore', 'Karachi', 'Islamabad', 'Faisalabad', 'Rawalpindi', 'Multan', 'Hyderabad', 'Peshawar', 'Quetta', 'Gujranwala'];
   const subjects = [
     'Mathematics', 'English', 'Physics', 'Chemistry', 'Biology', 'Computer Science',
@@ -465,29 +506,7 @@ const TutorRegistration = () => {
                   )}
                 </div>
 
-                {/* Province */}
-                <div>
-                  <label htmlFor="province" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
-                    Province <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    id="province"
-                    name="province"
-                    value={formData.province}
-                    onChange={handleChange}
-                    className={`w-full px-3 py-2 sm:px-4 sm:py-3 border rounded-lg focus:border-yellow-500 focus:ring-0 text-sm ${errors.province ? 'border-red-500' : 'border-gray-300'}`}
-                  >
-                    <option value="">Select Province</option>
-                    {provinces.map((p) => (
-                      <option key={p} value={p}>{p}</option>
-                    ))}
-                  </select>
-                  {errors.province && (
-                    <p className="text-red-500 text-xs mt-1 flex items-center">
-                      <AlertCircle className="w-4 h-4 mr-1" /> {errors.province}
-                    </p>
-                  )}
-                </div>
+               
 
                 {/* City */}
                 <div>
