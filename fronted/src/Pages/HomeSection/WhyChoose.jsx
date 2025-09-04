@@ -105,12 +105,12 @@ const WhyChooseUs = () => {
         </p>
 
         {/* Features Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, index) => (
             <Link
               key={index}
               to={feature.link}
-              className={`flex flex-col items-center p-4 bg-white rounded-xl shadow-md border border-yellow-400 transition-all duration-500 transform ${
+              className={`flex flex-col items-center p-6 bg-blue-500 rounded-xl shadow-md  transition-all duration-500 transform ${
                 hoveredIndex === index ? "scale-105" : "hover:scale-102"
               } hover:shadow-xl`}
               onMouseEnter={() => setHoveredIndex(index)}
@@ -118,7 +118,7 @@ const WhyChooseUs = () => {
             >
               {/* Icon */}
               <div
-                className={`p-4 bg-yellow-50 rounded-full mb-6 transition-all duration-500 ${
+                className={`p-4 bg-yellow-100 rounded-full mb-6 transition-all duration-500 ${
                   hoveredIndex === index ? "scale-110 rotate-12" : ""
                 }`}
               >
@@ -131,9 +131,9 @@ const WhyChooseUs = () => {
 
               {/* Title */}
               <h3
-                className={`text-xl font-semibold text-gray-800 mb-3 transition-all duration-300 ${
+                className={`text-xl font-semibold text-white mb-3 transition-all duration-300 ${
                   hoveredIndex === index
-                    ? "text-yellow-500 translate-y-0"
+                    ? "text-yellow-300 translate-y-0"
                     : "translate-y-1"
                 }`}
               >
@@ -142,10 +142,10 @@ const WhyChooseUs = () => {
 
               {/* Description */}
               <p
-                className={`text-gray-600 mb-12 max-w-2xl mx-auto text-lg animate-fade-in-delay ${
+                className={`text-yellow-50 mb-6 text-sm ${
                   hoveredIndex === index
                     ? "opacity-100 translate-y-0"
-                    : "opacity-70 translate-y-1"
+                    : "opacity-80 translate-y-1"
                 }`}
               >
                 {feature.description}
@@ -153,7 +153,7 @@ const WhyChooseUs = () => {
 
               {/* Get Started */}
               <div
-                className={`mt-6 flex items-center text-sm font-medium text-yellow-500 transition-all duration-300 ${
+                className={`mt-4 flex items-center text-sm font-medium text-yellow-300 transition-all duration-300 ${
                   hoveredIndex === index
                     ? "opacity-100 translate-x-0"
                     : "opacity-0 -translate-x-4"
@@ -181,16 +181,16 @@ const WhyChooseUs = () => {
         </div>
 
         {/* ✅ Stats Section */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 my-20">
+        <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-gray-300 border-t border-gray-300 my-20">
           {stats.map((stat, index) => (
             <div
               key={index}
-              className="flex flex-col items-center bg-white p-6 rounded-xl shadow-md border border-yellow-200"
+              className="flex flex-col items-center bg-white py-8"
             >
-              <h3 className="text-3xl md:text-4xl font-bold text-blue-500">
+              <h3 className="text-4xl md:text-5xl font-bold text-blue-900">
                 {counts[index]}+
               </h3>
-              <p className="text-gray-700 font-medium mt-2">{stat.label}</p>
+              <p className="text-gray-600 font-medium mt-2">{stat.label}</p>
             </div>
           ))}
         </div>
