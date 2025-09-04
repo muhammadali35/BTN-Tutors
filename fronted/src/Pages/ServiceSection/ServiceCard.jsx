@@ -2,16 +2,26 @@
 import { Link } from "react-router-dom";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import matric from "../../assets/tutorStu2.webp";
 import Alevel from "../../assets/Olevel1.jpg";
-
+import axios from "axios";
 function ServicesCard() {
   const controls = useAnimation();
   const [ref, inView] = useInView({
     triggerOnce: false,
     threshold: 0.3,
   });
+  const[services,setServices]=useState([]);
+  useEffect(()=>{
+    axios.get("http://localhost:5000/api/service")
+    .then((res)=>{
+      setServices(res.data);
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
+  },[])
 
   useEffect(() => {
     if (inView) {
@@ -31,18 +41,18 @@ function ServicesCard() {
   };
 
   // ✅ Data array for services
-  const services = [
-    {
-      title: "O & A Levels",
-      desc: "Cambridge/Edexcel syllabi, exam strategies, and topic-wise masterclasses.",
-      img: Alevel,
-    },
-    {
-      title: "Matric (9th & 10th)",
-      desc: "Board-focused prep, past papers, and timed mocks for top grades.",
-      img: matric,
-    },
-  ];
+  // const services = [
+  //   {
+  //     title: "O & A Levels",
+  //     desc: "Cambridge/Edexcel syllabi, exam strategies, and topic-wise masterclasses.",
+  //     img: Alevel,
+  //   },
+  //   {
+  //     title: "Matric (9th & 10th)",
+  //     desc: "Board-focused prep, past papers, and timed mocks for top grades.",
+  //     img: matric,
+  //   },
+  // ];
 
   return (
     <section
@@ -83,7 +93,7 @@ function ServicesCard() {
             >
               {/* Background Image */}
               <img
-                src={service.img}
+                src={service.image ? `http://localhost:5000/uploads/${service.image}` : Alevel}
                 alt={service.title}
                 className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                 loading="lazy"
@@ -98,7 +108,7 @@ function ServicesCard() {
                   {service.title}
                 </h3>
                 <p className="text-white/90 leading-relaxed text-sm sm:text-base px-4">
-                  {service.desc}
+                  {service.description}
                 </p>
               </div>
             </motion.div>

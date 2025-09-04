@@ -13,7 +13,7 @@ const heroSlides = [
     subTitle:"with Expert Tutors",
     desc: "Discover the best Home and Online Tutors for all Subjects and Classes near your area Today!",
     btn1: { text: "Find a Tutor", link: "/student-enroll" },
-    btn2: { text: "Become a Tutor", link: "/tutors" },
+    btn2: { text: "Become a Tutor", link: "/tutor-register" },
     bg: hero1,
   },
   {
@@ -21,7 +21,7 @@ const heroSlides = [
      subTitle:"Anywhere",
     desc: "Join our network of tutors and students. Access quality education from the comfort of your home.",
     btn1: { text: "Join Now", link: "/student-enroll" },
-    btn2: { text: "Teach with Us", link: "/tutors" },
+    btn2: { text: "Teach with Us", link: "/tutor-register" },
     bg: hero2,
   },
   {
@@ -29,7 +29,7 @@ const heroSlides = [
      subTitle:" Our Mission",
     desc: "We provide demo classes and expert guidance to help you succeed in your academic journey.",
     btn1: { text: "Book Demo", link: "/student-enroll" },
-    btn2: { text: "Apply as Tutor", link: "/tutors" },
+    btn2: { text: "Apply as Tutor", link: "/tutor-register" },
     bg: hero3,
   },
 ];

@@ -10,10 +10,13 @@ const Home = () => {
     <>
     <Hero/>
     <ServicesCard/>
+        <Institute/>
     <EnrollSection/>
-    <WhyChooseUs/>
-    <TuitionModes/>
-    <Institute/>
+        <WhyChooseUs/>
+      <TuitionModes/>
+
+  
+
     </>
   )
 }

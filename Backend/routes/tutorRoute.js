@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import { registerTutor,getTutors } from "../controllers/tutorRegistration.js";
+import { registerTutor,getTutors,getTutorById } from "../controllers/tutorRegistration.js";
 import upload from "../middlewere/multer.js"
 
 // Route for tutor registration with file uploads
@@ -17,5 +17,6 @@ router.post(
   registerTutor
 );
 router.get("/tutors", getTutors);
+router.get("/tutors/:id", getTutorById);
 
 export default router;
