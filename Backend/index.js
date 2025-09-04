@@ -27,6 +27,7 @@ app.use(
 
 // Middleware to parse JSON
 app.use(express.json());
+app.use('/uploads', express.static('uploads'));
 
 // ✅ MongoDB connection
 mongoose
