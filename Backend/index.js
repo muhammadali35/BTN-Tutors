@@ -5,6 +5,7 @@ import studentRouter from "./routes/studentRoute.js";
 import tutorRouter from "./routes/tutorRoute.js";
 import serviceRouter from "./routes/serviceRoute.js";
 import contactRouter from "./routes/contactRoutes.js";
+import TestimonialRouter from "./routes/testimonialRoutes.js";
 import cors from "cors";
 
 
@@ -43,6 +44,7 @@ app.use("/api", studentRouter);
 app.use("/api", serviceRouter);
 app.use("/api", tutorRouter);
 app.use("/api", contactRouter);
+app.use("/api", TestimonialRouter);
 
 
 const PORT = process.env.PORT || 5000;
