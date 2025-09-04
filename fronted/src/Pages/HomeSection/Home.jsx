@@ -5,6 +5,7 @@ import EnrollSection from '../Enroll/EnrollSection'
 import TuitionModes from '../../components/Tution'
 import Institute from './Institute'
 import WhyChooseUs from './WhyChoose'
+import TestimonialSection from '../HomeSection/Testimonial'
 const Home = () => {
   return (
     <>
@@ -14,7 +15,7 @@ const Home = () => {
     <EnrollSection/>
         <WhyChooseUs/>
       <TuitionModes/>
-
+    <TestimonialSection/>
   
 
     </>
