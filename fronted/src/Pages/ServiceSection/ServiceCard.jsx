@@ -3,12 +3,11 @@ import { Link } from "react-router-dom";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useEffect, useState } from "react";
-import Alevel from "../../assets/Olevel1.jpg";
+import Alevel from "../../assets/Olevel1.jpg"; // Default image
 import axios from "axios";
 
 function ServicesCard() {
   const controls = useAnimation();
-<<<<<<< HEAD
   const [ref, inView] = useInView({
     triggerOnce: false,
     threshold: 0.3,
@@ -16,18 +15,11 @@ function ServicesCard() {
 
   const [services, setServices] = useState([]);
 
-=======
-  const [ref, inView] = useInView({ triggerOnce: false, threshold: 0.3 });
-  const [services, setServices] = useState([]);
-
   // ✅ Fetch services from API
->>>>>>> 6ddec5896484eb4ac38a01773094c40c3fe440fb
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/service")
       .then((res) => {
-<<<<<<< HEAD
-        // ✅ Safely extract array
         const data = res.data;
 
         if (Array.isArray(data)) {
@@ -42,19 +34,17 @@ function ServicesCard() {
       })
       .catch((err) => {
         console.error("Failed to fetch services:", err);
-        setServices([]); // Ensure array on error
-=======
-        setServices(res.data.findService || []);
-      })
-      .catch((err) => {
-        console.log("API Error:", err);
->>>>>>> 6ddec5896484eb4ac38a01773094c40c3fe440fb
+        setServices([]); // Ensure empty array on error
       });
   }, []);
 
+  // Animate when in view
   useEffect(() => {
-    if (inView) controls.start("visible");
-    else controls.start("hidden");
+    if (inView) {
+      controls.start("visible");
+    } else {
+      controls.start("hidden");
+    }
   }, [inView, controls]);
 
   const variants = {
@@ -95,7 +85,6 @@ function ServicesCard() {
           variants={variants}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10"
         >
-<<<<<<< HEAD
           {Array.isArray(services) && services.length > 0 ? (
             services.map((service) => (
               <motion.div
@@ -114,27 +103,6 @@ function ServicesCard() {
                   className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                   loading="lazy"
                 />
-=======
-          {services.map((service, index) => (
-            <motion.div
-              key={index}
-              variants={variants}
-              className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 group h-80 sm:h-96"
-            >
-              {/* Background Image */}
-              <img
-                src={
-                  service.image
-                    ? `http://localhost:5000/uploads/${service.image}`
-                    : index % 2 === 0
-                    ? Alevel
-                    : matric
-                }
-                alt={service.title}
-                className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                loading="lazy"
-              />
->>>>>>> 6ddec5896484eb4ac38a01773094c40c3fe440fb
 
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
