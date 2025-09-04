@@ -8,6 +8,7 @@ import axios from "axios";
 
 function ServicesCard() {
   const controls = useAnimation();
+
   const [ref, inView] = useInView({
     triggerOnce: false,
     threshold: 0.3,
@@ -15,10 +16,17 @@ function ServicesCard() {
 
   const [services, setServices] = useState([]);
 
+
+  const [ref, inView] = useInView({ triggerOnce: false, threshold: 0.3 });
+  const [services, setServices] = useState([]);
+
+  // ✅ Fetch services from API
+
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/service")
       .then((res) => {
+
         // ✅ Safely extract array
         const data = res.data;
 
@@ -35,15 +43,18 @@ function ServicesCard() {
       .catch((err) => {
         console.error("Failed to fetch services:", err);
         setServices([]); // Ensure array on error
+
+        setServices(res.data.findService || []);
+      })
+      .catch((err) => {
+        console.log("API Error:", err);
+
       });
   }, []);
 
   useEffect(() => {
-    if (inView) {
-      controls.start("visible");
-    } else {
-      controls.start("hidden");
-    }
+    if (inView) controls.start("visible");
+    else controls.start("hidden");
   }, [inView, controls]);
 
   const variants = {
@@ -72,7 +83,8 @@ function ServicesCard() {
             Tutoring <span className="text-yellow-400">Services</span>
           </h2>
           <p className="mt-4 text-gray-600 max-w-xl md:max-w-2xl mx-auto leading-relaxed">
-            Tailored tutoring designed for academic success—empowering learners to achieve confidence, mastery, and top performance.
+            Tailored tutoring designed for academic success—empowering learners
+            to achieve confidence, mastery, and top performance.
           </p>
         </motion.div>
 
@@ -81,8 +93,9 @@ function ServicesCard() {
           initial="hidden"
           animate={controls}
           variants={variants}
-          className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-10"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10"
         >
+
           {Array.isArray(services) && services.length > 0 ? (
             services.map((service) => (
               <motion.div
@@ -101,6 +114,27 @@ function ServicesCard() {
                   className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                   loading="lazy"
                 />
+
+          {services.map((service, index) => (
+            <motion.div
+              key={index}
+              variants={variants}
+              className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 group h-80 sm:h-96"
+            >
+              {/* Background Image */}
+              <img
+                src={
+                  service.image
+                    ? `http://localhost:5000/uploads/${service.image}`
+                    : index % 2 === 0
+                    ? Alevel
+                    : matric
+                }
+                alt={service.title}
+                className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
+              />
+
 
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
