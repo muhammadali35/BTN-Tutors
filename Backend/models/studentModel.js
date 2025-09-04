@@ -47,6 +47,11 @@ const studentSchema = new Schema(
       type: String,
       default: "",
     },
+      status: {
+      type: String,
+      enum: ['pending', 'approved', 'rejected'],
+      default: 'pending'
+    }
   },
   { timestamps: true }
 );

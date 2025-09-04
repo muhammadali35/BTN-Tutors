@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import TermsModal from '../TermsModell';
 import Breadcrumb from '../../components/Breadcrumb';
-import axios from 'axios'
+import axios from 'axios';
 
 const TutorRegistration = () => {
   const [formData, setFormData] = useState({
@@ -23,6 +23,7 @@ const TutorRegistration = () => {
     subjects: [],
     otherSubjects: '',
     teachingMode: '',
+    cnicNumber: '', // ✅ New field
     profilePic: null,
     idCardFront: null,
     idCardBack: null,
@@ -35,6 +36,16 @@ const TutorRegistration = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
+
+  // Allowed file types
+  const allowedTypes = [
+    'image/jpeg', 'image/jpg', 'image/png', 'image/webp',
+    'application/pdf',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+  ];
+
+  const maxFileSize = 5 * 1024 * 1024; // 5MB
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -61,10 +72,18 @@ const TutorRegistration = () => {
 
   const handleFileChange = (e, field) => {
     const file = e.target.files[0];
-    if (file && !file.type.startsWith('image/')) {
-      toast.error('Please upload an image file (JPG, PNG)', { theme: 'colored' });
+    if (!file) return;
+
+    if (!allowedTypes.includes(file.type)) {
+      toast.error('❌ Invalid file type. Only JPG, PNG, PDF, DOC, DOCX allowed.', { theme: 'colored' });
       return;
     }
+
+    if (file.size > maxFileSize) {
+      toast.error('❌ File too large! Max 5MB allowed.', { theme: 'colored' });
+      return;
+    }
+
     setFormData((prev) => ({ ...prev, [field]: file }));
   };
 
@@ -77,10 +96,10 @@ const TutorRegistration = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    // ✅ Validation Order: Critical uploads first
     if (!formData.profilePic) newErrors.profilePic = 'Profile picture is required';
     else if (!formData.idCardFront) newErrors.idCardFront = 'ID Card Front is required';
     else if (!formData.idCardBack) newErrors.idCardBack = 'ID Card Back is required';
+    else if (!formData.cnicNumber.trim()) newErrors.cnicNumber = 'CNIC Number is required'; // ✅ Validation
     else if (!formData.name.trim()) newErrors.name = 'Name is required';
     else if (!formData.email.trim()) newErrors.email = 'Email is required';
     else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid';
@@ -117,96 +136,67 @@ const TutorRegistration = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setErrors({});
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrors({});
 
-  if (!validateForm()) {
-    console.log("Validation failed, check errors above");
-    return;
-  }
+    if (!validateForm()) return;
 
-  setIsSubmitting(true);
+    setIsSubmitting(true);
 
-  try {
-    const data = new FormData();
-    Object.keys(formData).forEach((key) => {
-      if (formData[key] !== null && formData[key] !== "") {
-        if (Array.isArray(formData[key])) {
-          formData[key].forEach((item) => data.append(key, item));
-        } else {
-          data.append(key, formData[key]);
+    try {
+      const data = new FormData();
+      Object.keys(formData).forEach((key) => {
+        if (formData[key]) {
+          if (Array.isArray(formData[key])) {
+            formData[key].forEach((item) => data.append(key, item));
+          } else {
+            data.append(key, formData[key]);
+          }
         }
-      }
-    });
+      });
 
-    console.log("FormData contents:");
-    for (let pair of data.entries()) {
-      console.log(`${pair[0]}: ${pair[1]}`);
+      const response = await axios.post("http://localhost:5000/api/tutorReg", data, {
+        headers: { "Content-Type": "multipart/form-data" },
+        timeout: 30000,
+      });
+
+      console.log("Server response:", response.data);
+
+      toast.dismiss();
+      toast.success("✅ Application submitted! We will verify and contact you soon.", {
+        position: "top-right",
+        autoClose: 2000,
+        theme: "colored",
+        style: { background: "#10b981", color: "white" },
+      });
+
+      // Reset form
+      setFormData({
+        name: "", email: "", password: "", mobile: "", whatsapp: "", city: "", address: "",
+        institution: "", experience: "", bio: "", subjects: [], otherSubjects: "",
+        teachingMode: "", cnicNumber: "", // ✅ Reset CNIC
+        profilePic: null, idCardFront: null, idCardBack: null,
+        Intermediate: null, bachelorDoc: null, mphilDoc: null, showOtherInput: false,
+      });
+
+      ["profilePic", "idCardFront", "idCardBack", "Intermediate", "bachelorDoc", "mphilDoc"]
+        .forEach((id) => { const el = document.getElementById(id); if (el) el.value = ""; });
+
+      setIsSubmitting(false);
+    } catch (error) {
+      console.error("❌ Tutor Registration Error:", error);
+      const errorMessage = error.response?.data?.message || error.message || "Failed to submit form. Please try again.";
+      toast.error(errorMessage, {
+        position: "top-center",
+        autoClose: 4000,
+        theme: "colored",
+        style: { background: "#E23E32", color: "white", top: "80px" },
+      });
+      setErrors({ message: errorMessage });
+      setIsSubmitting(false);
     }
-
-    const response = await axios.post("http://localhost:5000/api/tutorReg", data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      timeout: 30000, // 30 seconds timeout
-    });
-
-    console.log("Server response:", response.data);
-
-    toast.dismiss();
-    toast.success("✅ Application submitted! We will verify and contact you soon.", {
-      position: "top-right",
-      autoClose: 2000,
-      theme: "colored",
-      style: { background: "#10b981", color: "white" },
-    });
-
-    // Reset states
-    setFormData({
-      name: "",
-      email: "",
-      password: "",
-      mobile: "",
-      whatsapp: "",
-      city: "",
-      address: "",
-      institution: "",
-      experience: "",
-      bio: "",
-      subjects: [],
-      otherSubjects: "",
-      teachingMode: "",
-      profilePic: null,
-      idCardFront: null,
-      idCardBack: null,
-      Intermediate: null,
-      bachelorDoc: null,
-      mphilDoc: null,
-      showOtherInput: false,
-    });
-
-    // Reset file inputs
-    ["profilePic", "idCardFront", "idCardBack", "Intermediate", "bachelorDoc", "mphilDoc"].forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.value = "";
-    });
-
-    setIsSubmitting(false);
-  } catch (error) {
-    console.error("❌ Tutor Registration Error:", error);
-    const errorMessage = error.response?.data?.message || error.message || "Failed to submit form. Please try again.";
-    toast.error(errorMessage, {
-      position: "top-center",
-      autoClose: 4000,
-      theme: "colored",
-      style: { background: "#E23E32", color: "white", top: "80px" },
-    });
-    setErrors({ message: errorMessage });
-    setIsSubmitting(false);
-  }
-};
-
+  };
 
   const cities = ['Lahore', 'Karachi', 'Islamabad', 'Faisalabad', 'Rawalpindi', 'Multan', 'Hyderabad', 'Peshawar', 'Quetta', 'Gujranwala'];
   const subjects = [
@@ -224,6 +214,37 @@ const handleSubmit = async (e) => {
     'We do not charge registration fees, but service fee may apply later.',
     'Your profile may be removed for false information or misconduct.'
   ];
+
+  // Helper: Render file preview or icon
+  const renderFilePreview = (file, onRemove) => {
+    if (!file) return null;
+
+    const isImage = file.type.startsWith('image/');
+    const ext = file.name.split('.').pop().toUpperCase();
+
+    return (
+      <div className="flex items-center mt-3">
+        {isImage ? (
+          <img
+            src={URL.createObjectURL(file)}
+            alt="Preview"
+            className="w-24 h-16 object-cover border border-gray-300 rounded"
+          />
+        ) : (
+          <div className="w-24 h-16 bg-gray-100 flex items-center justify-center border border-gray-300 rounded">
+            <span className="text-gray-700 text-xs font-medium">{ext}</span>
+          </div>
+        )}
+        <button
+          type="button"
+          onClick={onRemove}
+          className="ml-3 text-red-500 hover:text-red-700"
+        >
+          <X className="w-5 h-5" />
+        </button>
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
@@ -249,6 +270,9 @@ const handleSubmit = async (e) => {
               </h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                {/* CNIC Number ✅ NEW FIELD */}
+                
+
                 {/* Profile Picture */}
                 <div className="sm:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -277,22 +301,7 @@ const handleSubmit = async (e) => {
                     onChange={(e) => handleFileChange(e, 'profilePic')}
                     className="hidden"
                   />
-                  {formData.profilePic && (
-                    <div className="flex items-center mt-3">
-                      <img
-                        src={URL.createObjectURL(formData.profilePic)}
-                        alt="Preview"
-                        className="w-16 h-16 rounded-full object-cover border-2 border-yellow-400"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => removeFile('profilePic')}
-                        className="ml-3 text-red-500 hover:text-red-700"
-                      >
-                        <X className="w-5 h-5" />
-                      </button>
-                    </div>
-                  )}
+                  {renderFilePreview(formData.profilePic, () => removeFile('profilePic'))}
                   {errors.profilePic && (
                     <p className="text-red-500 text-xs mt-1 flex items-center">
                       <AlertCircle className="w-4 h-4 mr-1" /> {errors.profilePic}
@@ -324,26 +333,11 @@ const handleSubmit = async (e) => {
                   <input
                     id="idCardFront"
                     type="file"
-                    accept="image/*"
+                    accept="image/*,.pdf"
                     onChange={(e) => handleFileChange(e, 'idCardFront')}
                     className="hidden"
                   />
-                  {formData.idCardFront && (
-                    <div className="flex items-center mt-3">
-                      <img
-                        src={URL.createObjectURL(formData.idCardFront)}
-                        alt="ID Front Preview"
-                        className="w-24 h-16 object-cover border border-gray-300 rounded"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => removeFile('idCardFront')}
-                        className="ml-3 text-red-500 hover:text-red-700"
-                      >
-                        <X className="w-5 h-5" />
-                      </button>
-                    </div>
-                  )}
+                  {renderFilePreview(formData.idCardFront, () => removeFile('idCardFront'))}
                   {errors.idCardFront && (
                     <p className="text-red-500 text-xs mt-1 flex items-center">
                       <AlertCircle className="w-4 h-4 mr-1" /> {errors.idCardFront}
@@ -375,29 +369,34 @@ const handleSubmit = async (e) => {
                   <input
                     id="idCardBack"
                     type="file"
-                    accept="image/*"
+                    accept="image/*,.pdf"
                     onChange={(e) => handleFileChange(e, 'idCardBack')}
                     className="hidden"
                   />
-                  {formData.idCardBack && (
-                    <div className="flex items-center mt-3">
-                      <img
-                        src={URL.createObjectURL(formData.idCardBack)}
-                        alt="ID Back Preview"
-                        className="w-24 h-16 object-cover border border-gray-300 rounded"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => removeFile('idCardBack')}
-                        className="ml-3 text-red-500 hover:text-red-700"
-                      >
-                        <X className="w-5 h-5" />
-                      </button>
-                    </div>
-                  )}
+                  {renderFilePreview(formData.idCardBack, () => removeFile('idCardBack'))}
                   {errors.idCardBack && (
                     <p className="text-red-500 text-xs mt-1 flex items-center">
                       <AlertCircle className="w-4 h-4 mr-1" /> {errors.idCardBack}
+                    </p>
+                  )}
+                </div>
+
+                 <div className="sm:col-span-1">
+                  <label htmlFor="cnicNumber" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
+                    CNIC Number <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    id="cnicNumber"
+                    name="cnicNumber"
+                    type="text"
+                    value={formData.cnicNumber}
+                    onChange={handleChange}
+                    placeholder="e.g. 35201-1234567-8"
+                    className={`w-full px-3 py-2 sm:px-4 sm:py-3 border rounded-lg focus:border-yellow-500 focus:ring-0 text-sm ${errors.cnicNumber ? 'border-red-500' : 'border-gray-300'}`}
+                  />
+                  {errors.cnicNumber && (
+                    <p className="text-red-500 text-xs mt-1 flex items-center">
+                      <AlertCircle className="w-4 h-4 mr-1" /> {errors.cnicNumber}
                     </p>
                   )}
                 </div>
@@ -505,8 +504,6 @@ const handleSubmit = async (e) => {
                     </p>
                   )}
                 </div>
-
-               
 
                 {/* City */}
                 <div>
@@ -724,19 +721,11 @@ const handleSubmit = async (e) => {
                 <input
                   id="Intermediate"
                   type="file"
-                  accept="image/*"
+                  accept="image/*,.pdf,.doc,.docx"
                   onChange={(e) => handleFileChange(e, 'Intermediate')}
                   className="hidden"
                 />
-                {formData.Intermediate && (
-                  <button
-                    type="button"
-                    onClick={() => removeFile('Intermediate')}
-                    className="text-red-500 hover:text-red-700 text-xs"
-                  >
-                    Remove
-                  </button>
-                )}
+                {renderFilePreview(formData.Intermediate, () => removeFile('Intermediate'))}
               </div>
 
               {/* Bachelor */}
@@ -763,19 +752,11 @@ const handleSubmit = async (e) => {
                 <input
                   id="bachelorDoc"
                   type="file"
-                  accept="image/*"
+                  accept="image/*,.pdf,.doc,.docx"
                   onChange={(e) => handleFileChange(e, 'bachelorDoc')}
                   className="hidden"
                 />
-                {formData.bachelorDoc && (
-                  <button
-                    type="button"
-                    onClick={() => removeFile('bachelorDoc')}
-                    className="text-red-500 hover:text-red-700 text-xs"
-                  >
-                    Remove
-                  </button>
-                )}
+                {renderFilePreview(formData.bachelorDoc, () => removeFile('bachelorDoc'))}
               </div>
 
               {/* MPhil */}
@@ -802,19 +783,11 @@ const handleSubmit = async (e) => {
                 <input
                   id="mphilDoc"
                   type="file"
-                  accept="image/*"
+                  accept="image/*,.pdf,.doc,.docx"
                   onChange={(e) => handleFileChange(e, 'mphilDoc')}
                   className="hidden"
                 />
-                {formData.mphilDoc && (
-                  <button
-                    type="button"
-                    onClick={() => removeFile('mphilDoc')}
-                    className="text-red-500 hover:text-red-700 text-xs"
-                  >
-                    Remove
-                  </button>
-                )}
+                {renderFilePreview(formData.mphilDoc, () => removeFile('mphilDoc'))}
               </div>
 
               {errors.education && (
@@ -877,7 +850,6 @@ const handleSubmit = async (e) => {
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
-        rtl={false}
         pauseOnFocusLoss
         draggable
         pauseOnHover

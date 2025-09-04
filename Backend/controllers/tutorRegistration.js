@@ -1,7 +1,9 @@
+// src/controllers/tutorRegistration.js
 import tutorSchema from "../models/tutorModel.js";
 import bcrypt from 'bcrypt';
 
 export const registerTutor = async (req, res) => {
+  // ✅ Add cnicNumber in destructuring
   const {
     name,
     email,
@@ -13,9 +15,10 @@ export const registerTutor = async (req, res) => {
     institution,
     experience,
     bio,
-    subjects, // Expecting an array from FormData
+    subjects,
     otherSubjects,
     teachingMode,
+    cnicNumber, // ✅ Added
   } = req.body;
 
   const profilePic = req.files?.profilePic?.[0]?.filename || null;
@@ -30,6 +33,11 @@ export const registerTutor = async (req, res) => {
     console.log("Request Body:", req.body);
     console.log("Request Files:", req.files);
 
+    // ✅ Check for multer validation error
+    if (req.fileValidationError) {
+      return res.status(400).json({ message: req.fileValidationError });
+    }
+
     // Server-side validation
     if (!name) return res.status(400).json({ message: "Name is required" });
     if (!email) return res.status(400).json({ message: "Email is required" });
@@ -40,6 +48,7 @@ export const registerTutor = async (req, res) => {
     if (!address) return res.status(400).json({ message: "Address is required" });
     if (!subjects && !otherSubjects) return res.status(400).json({ message: "At least one subject or other subject is required" });
     if (!teachingMode) return res.status(400).json({ message: "Teaching mode is required" });
+    if (!cnicNumber) return res.status(400).json({ message: "CNIC Number is required" }); // ✅ Added
     if (!profilePic) return res.status(400).json({ message: "Profile picture is required" });
     if (!idCardFront) return res.status(400).json({ message: "ID Card Front is required" });
     if (!idCardBack) return res.status(400).json({ message: "ID Card Back is required" });
@@ -47,10 +56,16 @@ export const registerTutor = async (req, res) => {
       return res.status(400).json({ message: "At least one educational document is required" });
     }
 
-    // Check for existing tutor
-    const existingTutor = await tutorSchema.findOne({ email });
-    if (existingTutor) {
-      return res.status(400).json({ message: "Tutor already exists" });
+    // Check for existing tutor by email
+    const existingTutorByEmail = await tutorSchema.findOne({ email });
+    if (existingTutorByEmail) {
+      return res.status(400).json({ message: "A tutor with this email already exists" });
+    }
+
+    // ✅ Check for existing tutor by CNIC
+    const existingTutorByCNIC = await tutorSchema.findOne({ cnicNumber });
+    if (existingTutorByCNIC) {
+      return res.status(400).json({ message: "A tutor with this CNIC already exists" });
     }
 
     // Hash password
@@ -68,9 +83,10 @@ export const registerTutor = async (req, res) => {
       institution,
       experience,
       bio,
-      subjects: Array.isArray(subjects) ? subjects : subjects ? subjects.split(",") : [], // Handle both array and string
+      subjects: Array.isArray(subjects) ? subjects : subjects ? subjects.split(",") : [],
       otherSubjects,
       teachingMode,
+      cnicNumber, // ✅ Save CNIC Number
       profilePic,
       idCardFront,
       idCardBack,
@@ -83,20 +99,23 @@ export const registerTutor = async (req, res) => {
     res.status(201).json({ message: "Tutor registered successfully" });
   } catch (error) {
     console.error("Tutor Registration Error:", error);
-    res.status(500).json({ message: error.message || "Server error during tutor registration" });
+    res.status(500).json({ 
+      message: error.message || "Server error during tutor registration" 
+    });
   }
 };
+
 export const getTutors = async (req, res) => {
   try {
     const tutors = await tutorSchema.find();
+    console.log("Get Tutors endpoint hit", tutors);
     res.status(200).json(tutors);
-      console.log("Get Tutors endpoint hit",tutors);
   } catch (error) {
     console.error("Error fetching tutors:", error);
     res.status(500).json({ message: "Server error while fetching tutors" });
   }
+};
 
-}
 export const getTutorById = async (req, res) => {
   const { id } = req.params;    
   try {
@@ -104,10 +123,40 @@ export const getTutorById = async (req, res) => {
     if (!tutor) {
       return res.status(404).json({ message: "Tutor not found" });
     }
+    console.log("Get Tutor by ID endpoint hit", tutor);
     res.status(200).json(tutor);
-      console.log("Get Tutor by ID endpoint hit",tutor);
   } catch (error) {
     console.error("Error fetching tutor by ID:", error);
     res.status(500).json({ message: "Server error while fetching tutor by ID" });
   }
-}
+};
+
+// ✅ Add this function
+export const updateTutorStatus = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  if (!['pending', 'approved', 'rejected'].includes(status)) {
+    return res.status(400).json({ message: "Invalid status value" });
+  }
+
+  try {
+    const tutor = await tutorSchema.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true } // return updated document
+    );
+
+    if (!tutor) {
+      return res.status(404).json({ message: "Tutor not found" });
+    }
+
+    res.status(200).json({
+      message: `Tutor status updated to ${status}`,
+      tutor,
+    });
+  } catch (error) {
+    console.error("Error updating tutor status:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};

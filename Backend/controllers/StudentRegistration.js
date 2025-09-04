@@ -77,3 +77,20 @@ export const getStudents=async(req,res)=>{
  }
 
 
+// ✅ Update student status
+export const updateStudentStatus = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  if (!['pending', 'approved', 'rejected'].includes(status)) {
+    return res.status(400).json({ message: "Invalid status" });
+  }
+
+  try {
+    const student = await studentModel.findByIdAndUpdate(id, { status }, { new: true });
+    if (!student) return res.status(404).json({ message: "Student not found" });
+    res.status(200).json({ message: `Student ${status}`, student });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update status" });
+  }
+};

@@ -5,6 +5,7 @@ import studentRouter from "./routes/studentRoute.js";
 import tutorRouter from "./routes/tutorRoute.js";
 import serviceRouter from "./routes/serviceRoute.js";
 import contactRouter from "./routes/contactRoutes.js";
+import analyticsRoutes from "./routes/analytics.js";
 import cors from "cors";
 
 
@@ -12,6 +13,7 @@ import cors from "cors";
 dotenv.config();
 
 const app = express();
+app.use(express.json());
 // ✅ Increase JSON payload limit to 10MB
 app.use(express.json({ limit: "10mb" }));
 
@@ -20,7 +22,10 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 app.use(
   cors({
-    origin: "http://localhost:5173", 
+   origin: [
+    'http://localhost:5173',
+    'http://localhost:5174', // ← Add this!
+  ],
     credentials: true,
   })
 );
@@ -43,6 +48,8 @@ app.use("/api", studentRouter);
 app.use("/api", serviceRouter);
 app.use("/api", tutorRouter);
 app.use("/api", contactRouter);
+app.use('/api/analytics', analyticsRoutes);
+
 
 
 const PORT = process.env.PORT || 5000;

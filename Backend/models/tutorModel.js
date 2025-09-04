@@ -53,6 +53,13 @@ const tutorSchema = new Schema(
       enum: ["home", "online", "both"], // extend as needed
       required: true,
     },
+     cnicNumber: {                 // ✅ CNIC Number
+      type: String,
+      required: true,
+      trim: true,
+      unique: true,               // ✅ Unique bana diya
+      match: [/^\d{5}-\d{7}-\d{1}$/, "Please enter a valid CNIC number (e.g. 35201-1234567-8)"]
+    },
     profilePic: {
       type: String, // store file path / URL
     },
@@ -70,6 +77,12 @@ const tutorSchema = new Schema(
     },
     mphilDoc: {
       type: String,
+    },
+      // ✅ Status field
+    status: {
+      type: String,
+      enum: ['pending', 'approved', 'rejected'],
+      default: 'pending',
     },
   },
   { timestamps: true }

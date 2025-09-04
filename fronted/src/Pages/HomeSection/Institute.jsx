@@ -1,3 +1,4 @@
+// src/components/Institute.jsx
 import React, { useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -27,12 +28,12 @@ const Institute = () => {
 
   // ✅ Get responsive scroll amount
   const getScrollAmount = () => {
-    if (window.innerWidth >= 1024) return 320; // xl
-    if (window.innerWidth >= 768) return 280; // md
-    return 240; // mobile
+    if (window.innerWidth >= 1024) return 320;
+    if (window.innerWidth >= 768) return 280;
+    return 240;
   };
 
-  // 🔁 Auto-scroll with responsive amount
+  // 🔁 Auto-scroll
   useEffect(() => {
     const container = scrollRef.current;
     if (!container) return;
@@ -43,7 +44,6 @@ const Institute = () => {
       const scrollAmount = getScrollAmount();
 
       if (scrollLeft >= maxScrollLeft - 5) {
-        // Instant reset to start (seamless)
         container.scrollTo({ left: 0, behavior: "auto" });
       } else {
         container.scrollBy({ left: scrollAmount, behavior: "smooth" });
@@ -53,7 +53,7 @@ const Institute = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // ✅ Manual scroll with responsive amount
+  // ✅ Manual scroll
   const scroll = (direction) => {
     const container = scrollRef.current;
     if (!container) return;
@@ -97,7 +97,7 @@ const Institute = () => {
           {/* Scroll Container */}
           <div
             ref={scrollRef}
-            className="flex gap-4 sm:gap-6 md:gap-4 lg:gap-4 overflow-x-auto px-8 sm:px-10 py-3 scroll-smooth hide-scrollbar"
+            className="flex gap-4 sm:gap-6 md:gap-4 lg:gap-4 overflow-x-auto px-8 sm:px-10 py-3 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
           >
             {duplicatedInstitutions.map((institution, index) => (
               <div
@@ -129,16 +129,8 @@ const Institute = () => {
         </div>
       </div>
 
-      {/* 👇 Hide Scrollbar */}
-      <style jsx>{`
-        .hide-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
+      {/* 👇 Inline Tailwind scrollbar hide */}
+      {/* No extra CSS file needed */}
     </div>
   );
 };
