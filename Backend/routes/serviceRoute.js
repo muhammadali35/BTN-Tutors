@@ -1,7 +1,6 @@
 // routes/serviceRoute.js
 import express from "express";
 const router = express.Router();
-
 import upload from './../middlewere/multer.js'; 
 import { addServices, getServices, updateServices, deleteServices } from './../controllers/service.js';
 

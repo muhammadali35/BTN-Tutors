@@ -7,6 +7,7 @@ import serviceRouter from "./routes/serviceRoute.js";
 import contactRouter from "./routes/contactRoutes.js";
 
 import TestimonialRouter from "./routes/testimonialRoutes.js";
+import feeRoutes from './routes/fee.routes.js'; // ✅ Correct name
 
 import analyticsRoutes from "./routes/analytics.js";
 
@@ -54,6 +55,7 @@ app.use("/api", tutorRouter);
 app.use("/api", contactRouter);
 app.use("/api", TestimonialRouter);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/fees', feeRoutes);
 
 
 

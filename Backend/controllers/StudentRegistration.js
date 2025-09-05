@@ -94,3 +94,21 @@ export const updateStudentStatus = async (req, res) => {
     res.status(500).json({ message: "Failed to update status" });
   }
 };
+
+
+
+
+// ✅ Delete Student
+export const deleteStudent = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const student = await studentModel.findByIdAndDelete(id);
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+    res.status(200).json({ message: "Student deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete student" });
+  }
+};
