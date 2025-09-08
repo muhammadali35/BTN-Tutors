@@ -5,20 +5,16 @@ import studentRouter from "./routes/studentRoute.js";
 import tutorRouter from "./routes/tutorRoute.js";
 import serviceRouter from "./routes/serviceRoute.js";
 import contactRouter from "./routes/contactRoutes.js";
-
 import TestimonialRouter from "./routes/testimonialRoutes.js";
 import feeRoutes from './routes/fee.routes.js'; // ✅ Correct name
-
 import analyticsRoutes from "./routes/analytics.js";
-
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
+
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-
-
 
 dotenv.config();
 
@@ -42,8 +38,10 @@ app.use(
 
 // Middleware to parse JSON
 app.use(express.json());
+app.use('/uploads', express.static('uploads'));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 console.log("Uploads folder path:", path.join(__dirname, "uploads"));
+
 
 
 // ✅ MongoDB connection
