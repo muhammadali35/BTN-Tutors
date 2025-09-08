@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { FaWhatsapp, FaPhoneAlt } from "react-icons/fa";
 
 import hero1 from "../../assets/tutorbg2.webp";
-import hero2 from "../../assets/tutorStu.jpg";
+import hero2 from "../../assets/learn.webp";
 import hero3 from "../../assets/successStu.jpg";
 
 const heroSlides = [
