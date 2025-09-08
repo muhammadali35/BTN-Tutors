@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
-import {
-  Autoplay,
-  EffectCoverflow,
-  Pagination,
-  Navigation,
-} from "swiper/modules";
+import { Autoplay, EffectCoverflow, Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
@@ -26,16 +21,21 @@ const TestimonialSection = () => {
     "https://cdn-icons-png.flaticon.com/512/847/847969.png"; // fallback avatar
 
   return (
-    <section className="py-12 sm:py-16 bg-white">
-      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 sm:mb-12 text-purple-700">
+    <section className="py-16 bg-white">
+      <h2 className="text-4xl font-bold text-center mb-12 text-purple-700">
         Testimonials
       </h2>
       <Swiper
         effect={"coverflow"}
         grabCursor={true}
         centeredSlides={true}
+        slidesPerView={3}
         loop={true}
+<<<<<<< HEAD
         autoplay={{ delay: 1000, disableOnInteraction: false }}
+=======
+        autoplay={{ delay: 2000, disableOnInteraction: false }}
+>>>>>>> 748791bd72f4231bcd28cc4900dce2185beaf39c
         coverflowEffect={{
           rotate: 20,
           stretch: 0,
@@ -43,38 +43,33 @@ const TestimonialSection = () => {
           modifier: 1,
           slideShadows: true,
         }}
+        // pagination={{ clickable: true }}
         navigation={true}
         modules={[Autoplay, EffectCoverflow, Pagination, Navigation]}
-        className="max-w-6xl mx-auto px-4"
-        breakpoints={{
-          320: { slidesPerView: 1 }, // 📱 Mobile
-          640: { slidesPerView: 1 }, // Small screens
-          768: { slidesPerView: 2 }, // Tablets
-          1024: { slidesPerView: 3 }, // Laptops
-        }}
+        className="max-w-6xl mx-auto"
       >
         {testimonials.map((item, index) => (
           <SwiperSlide key={item._id || index}>
-            <div className="p-6 sm:p-10 md:p-16 h-auto min-h-[320px] flex flex-col justify-center rounded-2xl shadow-lg bg-blue-600 text-white transition-transform duration-500">
+            <div className="p-16 h-96 flex flex-col justify-center rounded-2xl shadow-lg bg-blue-600 text-white transition-transform duration-500">
               {/* Image */}
               <div className="flex justify-center mb-4">
-               <img
-  src={item.Image ? item.Image : dummyImage}
-  alt={item.name}
-  className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-white shadow-md"
-/>
+                <img
+                  src={
+                    item.Image
+                      ? `http://localhost:5000/uploads/testimonials/${item.Image}`
+                      : dummyImage
+                  }
+                  alt={item.name}
+                  className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-md"
+                />
               </div>
 
               {/* Name & Title */}
-              <h3 className="text-base sm:text-lg font-bold text-center">
-                {item.name}
-              </h3>
-              <p className="text-xs sm:text-sm italic text-center opacity-90">
-                {item.title}
-              </p>
+              <h3 className="text-lg font-bold text-center">{item.name}</h3>
+              <p className="text-sm italic text-center opacity-90">{item.title}</p>
 
               {/* Message */}
-              <p className="mt-3 text-center text-sm sm:text-base leading-relaxed">
+              <p className="mt-3 text-center text-sm leading-relaxed line-clamp-3">
                 “{item.message}”
               </p>
             </div>

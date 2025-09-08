@@ -22,7 +22,6 @@ function ServicesCard() {
       .then((res) => {
         const data = res.data;
 
-        // ✅ Extract array safely
         if (Array.isArray(data)) {
           setServices(data);
         } else if (Array.isArray(data.findService)) {
@@ -87,9 +86,9 @@ function ServicesCard() {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10"
         >
           {Array.isArray(services) && services.length > 0 ? (
-            services.map((service, index) => (
+            services.map((service) => (
               <motion.div
-                key={service._id || index}
+                key={service._id || service.title}
                 variants={variants}
                 className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 group h-80 sm:h-96"
               >
@@ -114,9 +113,7 @@ function ServicesCard() {
                     {service.title}
                   </h3>
                   <p className="text-white/90 leading-relaxed text-sm sm:text-base px-4">
-                    {service.description ||
-                      service.desc ||
-                      "No description available"}
+                    {service.description || service.desc || "No description available"}
                   </p>
                 </div>
               </motion.div>

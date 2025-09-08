@@ -1,8 +1,11 @@
 // src/controllers/tutorRegistration.js
 import tutorSchema from "../models/tutorModel.js";
 import bcrypt from 'bcrypt';
-// import { sendAdminNotification } from "../utils/tutorEmail.js";
 
+/**
+ * ✅ Register a new tutor
+ * Includes CNIC validation and document upload support
+ */
 export const registerTutor = async (req, res) => {
   const {
     name,
@@ -21,6 +24,7 @@ export const registerTutor = async (req, res) => {
     cnicNumber,
   } = req.body;
 
+  // File paths from multer
   const profilePic = req.files?.profilePic?.[0]?.filename || null;
   const idCardFront = req.files?.idCardFront?.[0]?.filename || null;
   const idCardBack = req.files?.idCardBack?.[0]?.filename || null;
@@ -29,13 +33,16 @@ export const registerTutor = async (req, res) => {
   const mphilDoc = req.files?.mphilDoc?.[0]?.filename || null;
 
   try {
+    // Debug logs
     console.log("Request Body:", req.body);
-    console.log("Request Files:", req.files);
+    console.log("Uploaded Files:", req.files);
 
+    // Multer validation error
     if (req.fileValidationError) {
       return res.status(400).json({ message: req.fileValidationError });
     }
 
+    // Required field validation
     if (!name) return res.status(400).json({ message: "Name is required" });
     if (!email) return res.status(400).json({ message: "Email is required" });
     if (!password) return res.status(400).json({ message: "Password is required" });
@@ -53,6 +60,7 @@ export const registerTutor = async (req, res) => {
       return res.status(400).json({ message: "At least one educational document is required" });
     }
 
+    // Check if tutor already exists
     const existingTutorByEmail = await tutorSchema.findOne({ email });
     if (existingTutorByEmail) {
       return res.status(400).json({ message: "A tutor with this email already exists" });
@@ -63,8 +71,17 @@ export const registerTutor = async (req, res) => {
       return res.status(400).json({ message: "A tutor with this CNIC already exists" });
     }
 
+    // Hash password
     const hashedPassword = await bcrypt.hash(password, 12);
 
+    // Prepare subjects
+    const parsedSubjects = Array.isArray(subjects)
+      ? subjects
+      : subjects
+      ? subjects.split(",").map(s => s.trim())
+      : [];
+
+    // Create new tutor
     const newTutor = new tutorSchema({
       name,
       email,
@@ -76,7 +93,7 @@ export const registerTutor = async (req, res) => {
       institution,
       experience,
       bio,
-      subjects: Array.isArray(subjects) ? subjects : subjects ? subjects.split(",") : [],
+      subjects: parsedSubjects,
       otherSubjects,
       teachingMode,
       cnicNumber,
@@ -86,11 +103,13 @@ export const registerTutor = async (req, res) => {
       Intermediate,
       bachelorDoc,
       mphilDoc,
+      status: "pending", // Default status
     });
 
     await newTutor.save();
 
-    // ✅ SendGrid Email Notification
+    // ✅ Optional: Send email notification to admin
+    // import { sendAdminNotification } from "../utils/tutorEmail.js";
     // await sendAdminNotification(newTutor);
 
     res.status(201).json({ message: "Tutor registered successfully" });
@@ -102,11 +121,12 @@ export const registerTutor = async (req, res) => {
   }
 };
 
-
+/**
+ * ✅ Get all tutors
+ */
 export const getTutors = async (req, res) => {
   try {
     const tutors = await tutorSchema.find();
-    console.log("Get Tutors endpoint hit", tutors);
     res.status(200).json(tutors);
   } catch (error) {
     console.error("Error fetching tutors:", error);
@@ -114,6 +134,9 @@ export const getTutors = async (req, res) => {
   }
 };
 
+/**
+ * ✅ Get tutor by ID
+ */
 export const getTutorById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -121,7 +144,6 @@ export const getTutorById = async (req, res) => {
     if (!tutor) {
       return res.status(404).json({ message: "Tutor not found" });
     }
-    console.log("Get Tutor by ID endpoint hit", tutor);
     res.status(200).json(tutor);
   } catch (error) {
     console.error("Error fetching tutor by ID:", error);
@@ -129,6 +151,9 @@ export const getTutorById = async (req, res) => {
   }
 };
 
+/**
+ * ✅ Update tutor status (pending, approved, rejected)
+ */
 export const updateTutorStatus = async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
@@ -141,7 +166,7 @@ export const updateTutorStatus = async (req, res) => {
     const tutor = await tutorSchema.findByIdAndUpdate(
       id,
       { status },
-      { new: true }
+      { new: true } // return updated document
     );
 
     if (!tutor) {
@@ -154,10 +179,13 @@ export const updateTutorStatus = async (req, res) => {
     });
   } catch (error) {
     console.error("Error updating tutor status:", error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error while updating tutor status" });
   }
 };
 
+/**
+ * ✅ Delete tutor by ID
+ */
 export const deleteTutor = async (req, res) => {
   const { id } = req.params;
   try {
