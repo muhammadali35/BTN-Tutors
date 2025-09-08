@@ -31,11 +31,9 @@ const TestimonialSection = () => {
         centeredSlides={true}
         slidesPerView={3}
         loop={true}
-<<<<<<< HEAD
         autoplay={{ delay: 1000, disableOnInteraction: false }}
-=======
-        autoplay={{ delay: 2000, disableOnInteraction: false }}
->>>>>>> 748791bd72f4231bcd28cc4900dce2185beaf39c
+
+
         coverflowEffect={{
           rotate: 20,
           stretch: 0,
