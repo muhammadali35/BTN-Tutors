@@ -55,7 +55,7 @@ const Institute = () => {
           grabCursor={true}
           centeredSlides={true}
           loop={true}
-          autoplay={{ delay: 2500, disableOnInteraction: false }}
+          autoplay={{ delay: 1500, disableOnInteraction: false }}
           coverflowEffect={{
             rotate: 20,
             stretch: 30,
