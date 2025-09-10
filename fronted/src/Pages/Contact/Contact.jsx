@@ -34,45 +34,48 @@ const ContactPage = () => {
   const [message, setMessage] = React.useState("");
   console.log(name, email, subject, message);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
+
   const submitHhandler = async (e) => {
     e.preventDefault();
-      try {
-        const res =axios.post("http://localhost:5000/api/contact", {
-      name,
-      email,  
-      subject,
-      message,
-    });
-     toast.dismiss();
-              setTimeout(() => {
-                 toast.success("✅ Message sent successful! We will contact you soon.", {
-              position: "top-center",
-              autoClose: 2000,
-              theme: "colored",
-              style: { background: "#10b981", color: "white" },
-            });
-              },);
-    
+    try {
+      const res = axios.post(`${API_URL}/api/contact`, {
+        name,
+        email,
+        subject,
+        message,
+      });
+      toast.dismiss();
+      setTimeout(() => {
+        toast.success("✅ Message sent successful! We will contact you soon.", {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+          style: { background: "#10b981", color: "white" },
+        });
+      },);
+
       setName("");
       setEmail("");
       setSubject("");
-      setMessage(""); 
-    console.log(res);
-      } catch (error) {
-          toast.dismiss();
-                  console.log("❌ API Error:", error.response); 
-                toast.error(
-                  error.response?.data?.message || "❌ Message not sent. Try again!",
-                  {
-                    position: "top-center",
-                    autoClose: 2000,
-                    theme: "colored",
-                    style: { background: "#E23E32", color: "white" },
-                  }
-                );
-      }
+      setMessage("");
+      console.log(res);
+    } catch (error) {
+      toast.dismiss();
+      console.log("❌ API Error:", error.response);
+      toast.error(
+        error.response?.data?.message || "❌ Message not sent. Try again!",
+        {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+          style: { background: "#E23E32", color: "white" },
+        }
+      );
+    }
   }
-  
+
   return (
     <section className="bg-gray-50 py-16 px-6 md:px-12 lg:px-20 font-sans">
       <div className="max-w-6xl mx-auto">
@@ -88,19 +91,20 @@ const ContactPage = () => {
         </div>
 
         {/* Contact Info */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 cursor-pointer ">
           {contactInfo.map((item, index) => (
             <div
               key={index}
-              className="flex flex-col items-center bg-white shadow-md rounded-xl p-6 hover:shadow-lg transition border border-yellow-400 group"
+              
+              className="flex flex-col items-center bg-white shadow-md rounded-xl p-6 hover:shadow-lg transition border border-yellow-400 group "
             >
               <item.icon className="w-10 h-10 text-yellow-400 mb-3" />
-              <h3 className="text-lg font-semibold text-black group-hover:text-yellow-400">{item.title}</h3>
+              <h3 className="text-lg font-semibold text-black ">{item.title}</h3>
               <a
                 href={item.link}
                 target={item.title === "WhatsApp" ? "_blank" : "_self"}
                 rel="noopener noreferrer"
-                className="text-gray-600 hover:text-yellow-400 mt-2 font-medium"
+                className="text-gray-600  hover:text-yellow-400 mt-2 font-medium"
               >
                 {item.display}
               </a>
@@ -109,12 +113,12 @@ const ContactPage = () => {
         </div>
 
         {/* Contact Form */}
-        <div className="bg-white  border border-yellow-400 shadow-md rounded-xl p-8">
-          
+        <div className="bg-gay-50  border border-yellow-400 shadow-md rounded-xl p-8">
+
           <h3 className="text-2xl font-bold text-blue-500 mb-6">
             Send Us <span className="text-yellow-400">a Message</span>
           </h3>
-          <form className="space-y-6"onSubmit={submitHhandler}>
+          <form className="space-y-6" onSubmit={submitHhandler}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <input
                 type="text"

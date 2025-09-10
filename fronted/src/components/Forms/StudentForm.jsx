@@ -12,8 +12,8 @@ import {
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import TermsModal from "../TermsModell"; // یقینی بنائیں کہ صحیح پاتھ ہو
-import Breadcrumb from "../../components/Breadcrumb";
+import TermsModal from "./TermsModel";
+import Breadcrumb from "../Breadcrumb";
 import axios from "axios";
 
 const StudentRegistration = () => {
@@ -81,81 +81,83 @@ const StudentRegistration = () => {
     }));
   };
 
-const validateForm = () => {
-  const newErrors = {};
+  const validateForm = () => {
+    const newErrors = {};
 
-  if (!formData.name.trim()) {
-    newErrors.name = "Name is required";
-  }
-
-  if (!formData.email.trim()) {
-    newErrors.email = "Email is required";
-  } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-    newErrors.email = "Email is invalid";
-  }
-
-  if (!formData.password.trim()) {
-    newErrors.password = "Password is required";
-  } else if (formData.password.length < 8) {
-    newErrors.password = "Password must be at least 8 characters";
-  }
-
-  if (!formData.mobile.trim()) {
-    newErrors.mobile = "Mobile number is required";
-  }
-
-  if (!formData.city.trim()) {
-    newErrors.city = "City is required";
-  }
-
-  if (!formData.address.trim()) {
-    newErrors.address = "Home address is required";
-  }
-
-  if (!formData.school.trim()) {
-    newErrors.school = "School name is required";
-  }
-
-  if (!formData.tuitionMode) {
-    newErrors.tuitionMode = "Please select tuition mode (Home or Online)";
-  }
-
-  if (formData.subjects.length === 0 && !formData.otherSubjects.trim()) {
-    newErrors.subjects = "Please select at least one subject or specify other";
-  }
-
-  setErrors(newErrors);
-
-  // ✅ Error toast (pehle error dikhane k liye)
-  if (Object.keys(newErrors).length > 0) {
-    const firstError = Object.values(newErrors)[0];
-    toast.dismiss();
-    toast.error(firstError, {
-      toastId: "form-error",
-      position: "top-center",
-      autoClose: 4000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: false,
-      theme: "colored",
-      style: { background: "#E23E32", color: "white" },
-    });
-
-    // ✅ Scroll to first error
-    const firstErrorField = Object.keys(newErrors)[0];
-    const element = document.getElementById(firstErrorField);
-    if (element) {
-      setTimeout(
-        () => element.scrollIntoView({ behavior: "smooth", block: "center" }),
-        100
-      );
-      element.focus();
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
     }
-  }
 
-  return Object.keys(newErrors).length === 0;
-};
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Email is invalid";
+    }
+
+    if (!formData.password.trim()) {
+      newErrors.password = "Password is required";
+    } else if (formData.password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters";
+    }
+
+    if (!formData.mobile.trim()) {
+      newErrors.mobile = "Mobile number is required";
+    }
+
+    if (!formData.city.trim()) {
+      newErrors.city = "City is required";
+    }
+
+    if (!formData.address.trim()) {
+      newErrors.address = "Home address is required";
+    }
+
+    if (!formData.school.trim()) {
+      newErrors.school = "School name is required";
+    }
+
+    if (!formData.tuitionMode) {
+      newErrors.tuitionMode = "Please select tuition mode (Home or Online)";
+    }
+
+    if (formData.subjects.length === 0 && !formData.otherSubjects.trim()) {
+      newErrors.subjects = "Please select at least one subject or specify other";
+    }
+
+    setErrors(newErrors);
+
+    // ✅ Error toast (pehle error dikhane k liye)
+    if (Object.keys(newErrors).length > 0) {
+      const firstError = Object.values(newErrors)[0];
+      toast.dismiss();
+      toast.error(firstError, {
+        toastId: "form-error",
+        position: "top-center",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        theme: "colored",
+        style: { background: "#E23E32", color: "white" },
+      });
+
+      // ✅ Scroll to first error
+      const firstErrorField = Object.keys(newErrors)[0];
+      const element = document.getElementById(firstErrorField);
+      if (element) {
+        setTimeout(
+          () => element.scrollIntoView({ behavior: "smooth", block: "center" }),
+          100
+        );
+        element.focus();
+      }
+    }
+
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -164,19 +166,21 @@ const validateForm = () => {
       setIsSubmitting(true);
       try {
         const ans = await axios.post(
-          "http://localhost:5000/api/studentReg",
+          `${API_URL}/api/studentReg`,
           formData
         );
+        console.log(ans);
+        
 
         toast.dismiss();
-          setTimeout(() => {
-             toast.success("✅ Registration successful! We will contact you soon.", {
-          position: "top-center",
-          autoClose: 5000,
-          theme: "colored",
-          style: { background: "#10b981", color: "white" },
-        });
-          },);
+        setTimeout(() => {
+          toast.success("✅ Registration successful! We will contact you soon.", {
+            position: "top-center",
+            autoClose: 5000,
+            theme: "colored",
+            style: { background: "#10b981", color: "white" },
+          });
+        },);
 
         setIsSubmitting(false);
         setFormData({
@@ -194,7 +198,7 @@ const validateForm = () => {
         });
       } catch (error) {
         toast.dismiss();
-          console.log("❌ API Error:", error.response); 
+        console.log("❌ API Error:", error.response);
         toast.error(
           error.response?.data?.message || "❌ Registration failed. Try again!",
           {
@@ -228,6 +232,7 @@ const validateForm = () => {
     "Chemistry",
     "Biology",
     "Computer Science",
+    "Holy Quran",
     "Urdu",
     "Islamic Studies",
     "Pakistan Studies",
@@ -335,11 +340,10 @@ const validateForm = () => {
                           name={field.id}
                           value={formData[field.id]}
                           onChange={handleChange}
-                          className={`pl-3 w-full px-4 py-3 border rounded-lg focus:border-yellow-500 focus:ring-0 transition-all ${
-                            errors[field.id]
+                          className={`pl-3 w-full px-4 py-3 border rounded-lg focus:border-yellow-500 focus:ring-0 transition-all ${errors[field.id]
                               ? "border-red-500"
                               : "border-gray-300"
-                          }`}
+                            }`}
                         >
                           <option value="">Select City</option>
                           {cities.map((opt) => (
@@ -356,11 +360,10 @@ const validateForm = () => {
                           value={formData.address}
                           onChange={handleChange}
                           placeholder="House #, Street, Area"
-                          className={`pl-10 w-full px-4 py-3 border rounded-lg focus:border-yellow-500 focus:ring-0 transition-all ${
-                            errors.address
+                          className={`pl-10 w-full px-4 py-3 border rounded-lg focus:border-yellow-500 focus:ring-0 transition-all ${errors.address
                               ? "border-red-500"
                               : "border-gray-300"
-                          }`}
+                            }`}
                         />
                       ) : (
                         <input
@@ -373,18 +376,17 @@ const validateForm = () => {
                             field.id === "name"
                               ? "Enter your full name"
                               : field.id === "email"
-                              ? "example@email.com"
-                              : field.id === "password"
-                              ? "At least 8 characters"
-                              : field.id === "mobile"
-                              ? "+92 300 1234567"
-                              : "Enter your address"
+                                ? "example@email.com"
+                                : field.id === "password"
+                                  ? "At least 8 characters"
+                                  : field.id === "mobile"
+                                    ? "+92 300 1234567"
+                                    : "Enter your address"
                           }
-                          className={`pl-10 w-full px-4 py-3 border rounded-lg focus:border-yellow-500 focus:ring-0 transition-all ${
-                            errors[field.id]
+                          className={`pl-10 w-full px-4 py-3 border rounded-lg focus:border-yellow-500 focus:ring-0 transition-all ${errors[field.id]
                               ? "border-red-500"
                               : "border-gray-300"
-                          }`}
+                            }`}
                         />
                       )}
                     </div>
@@ -423,9 +425,8 @@ const validateForm = () => {
                       value={formData.school}
                       onChange={handleChange}
                       placeholder="Your institution name"
-                      className={`pl-10 w-full px-4 py-3 border rounded-lg focus:border-yellow-500 focus:ring-0 transition-all ${
-                        errors.school ? "border-red-500" : "border-gray-300"
-                      }`}
+                      className={`pl-10 w-full px-4 py-3 border rounded-lg focus:border-yellow-500 focus:ring-0 transition-all ${errors.school ? "border-red-500" : "border-gray-300"
+                        }`}
                     />
                   </div>
                   {errors.school && (
@@ -596,18 +597,7 @@ const validateForm = () => {
               </div>
             </div>
 
-            {/* Login Link */}
-            <div className="text-center mt-4">
-              <p className="text-gray-600 text-sm">
-                Already have an account?{" "}
-                <Link
-                  to="/login"
-                  className="font-medium text-yellow-600 hover:text-yellow-500 transition-colors"
-                >
-                  Login here
-                </Link>
-              </p>
-            </div>
+
           </form>
         </div>
       </main>

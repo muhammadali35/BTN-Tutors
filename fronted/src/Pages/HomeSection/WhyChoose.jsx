@@ -42,8 +42,8 @@ const WhyChooseUs = () => {
   const stats = [
     { label: "Tutors", value: 200 },
     { label: "Students", value: 100 },
-    { label: "Global Connections", value: 200 },
-    { label: "Projects", value: 4 },
+    { label: "Resources", value: 200 },
+    { label: "Global Connections", value: 4 },
   ];
 
   // ✅ Animated Counter State
@@ -93,7 +93,7 @@ const WhyChooseUs = () => {
   }, [inView]);
 
   return (
-    <section className="py-14 bg-white" ref={sectionRef}>
+    <section className="pt-20 bg-white" ref={sectionRef}>
       <div className="container mx-auto px-6 lg:px-12 text-center">
         {/* Heading */}
         <h2 className="text-3xl md:text-4xl font-bold text-blue-500 mb-4 leading-tight">
@@ -187,7 +187,7 @@ const WhyChooseUs = () => {
               key={index}
               className="flex flex-col items-center bg-white py-8"
             >
-              <h3 className="text-4xl md:text-5xl font-bold text-blue-900">
+              <h3 className="text-4xl md:text-5xl font-bold text-blue-500">
                 {counts[index]}+
               </h3>
               <p className="text-gray-600 font-medium mt-2">{stat.label}</p>

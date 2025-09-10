@@ -1,4 +1,3 @@
-// src/components/Institute.jsx
 import React, { useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -30,7 +29,7 @@ const Institute = () => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
 
-  // Attach navigation refs after mount
+ 
   useEffect(() => {
     if (prevRef.current && nextRef.current) {
       // Swiper will use these buttons
@@ -38,7 +37,7 @@ const Institute = () => {
   }, []);
 
   return (
-    <div className="bg-white py-12 sm:py-16 relative">
+    <div className="bg-white pb-12 sm:pb-16 relative">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-10 max-w-3xl mx-auto">
@@ -58,20 +57,10 @@ const Institute = () => {
         {/* Swiper Carousel */}
         <Swiper
           effect="coverflow"
-<<<<<<< HEAD
           grabCursor={true}
           centeredSlides={true}
           loop={true}
-          autoplay={{ delay: 1500, disableOnInteraction: false }}
-=======
-          grabCursor
-          centeredSlides
-          loop
-          autoplay={{
-            delay: 3000,
-            disableOnInteraction: false,
-          }}
->>>>>>> 748791bd72f4231bcd28cc4900dce2185beaf39c
+          autoplay={{ delay: 1000, disableOnInteraction: false }}
           coverflowEffect={{
             rotate: 20,
             stretch: 30,
@@ -109,19 +98,19 @@ const Institute = () => {
           <div className="absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-10">
             <button
               ref={prevRef}
-              className="bg-yellow-400 text-white p-2 sm:p-3 rounded-full shadow-lg hover:bg-yellow-500 active:scale-95 transition-transform focus:outline-none focus:ring-2 focus:ring-yellow-300"
+              className=""
               aria-label="Previous Slide"
             >
-              <ChevronLeft size={20} className="sm:size-6" />
+              {/* <ChevronLeft size={20} className="sm:size-6" /> */}
             </button>
           </div>
           <div className="absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-10">
             <button
               ref={nextRef}
-              className="bg-yellow-400 text-white p-2 sm:p-3 rounded-full shadow-lg hover:bg-yellow-500 active:scale-95 transition-transform focus:outline-none focus:ring-2 focus:ring-yellow-300"
+              className=""
               aria-label="Next Slide"
             >
-              <ChevronRight size={20} className="sm:size-6" />
+              {/* <ChevronRight size={20} className="sm:size-6" /> */}
             </button>
           </div>
         </Swiper>

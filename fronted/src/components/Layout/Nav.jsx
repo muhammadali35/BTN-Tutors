@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Menu,
@@ -6,22 +6,12 @@ import {
   ChevronDown,
   User,
   GraduationCap,
-  Globe,
-  LogIn,
+
 } from "lucide-react";
 import logo from "./../../assets/tutorlogo.jpg";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
-
-  useEffect(() => {
-    if (showLoginModal) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-  }, [showLoginModal]);
 
   return (
     <nav className="bg-white shadow-lg fixed top-0 left-0 w-full z-50">
@@ -40,7 +30,7 @@ function Navbar() {
 
         {/* Center - Nav Items */}
         <div className="hidden md:flex items-center space-x-6 lg:space-x-8 font-medium text-gray-700">
-          {["Home", "About", "Services", "Contact"].map((item) => (
+          {["Home", "About", "Services","Blog", "Contact" ].map((item) => (
             <Link
               key={item}
               to={`/${item.toLowerCase()}`}
@@ -72,12 +62,7 @@ function Navbar() {
               >
                 <User size={16} className="text-yellow-400" /> As a Tutor
               </Link>
-              <Link
-                to="/guest-register"
-                className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-yellow-50 hover:text-yellow-400 transition"
-              >
-                <Globe size={16} className="text-yellow-400" /> As a Guest
-              </Link>
+            
             </div>
           </div>
         </div>
@@ -94,7 +79,7 @@ function Navbar() {
       {/* Mobile Menu Dropdown */}
       {isOpen && (
         <div className="md:hidden bg-white shadow-md px-6 py-4 space-y-4 font-medium text-gray-700">
-          {["Home", "About", "Services", "Contact"].map((item) => (
+          {['Home', 'About', 'Services', 'Blog', 'Contact'].map((item) => (
             <Link
               key={item}
               to={`/${item.toLowerCase()}`}
@@ -104,19 +89,29 @@ function Navbar() {
               {item}
             </Link>
           ))}
-          <button
-            onClick={() => setShowLoginModal(true)}
-            className="block w-full px-4 py-2 border-2 border-yellow-400 text-yellow-400 rounded-lg hover:bg-yellow-400 hover:text-white transition font-semibold"
-          >
-            Login
-          </button>
-          <Link
-            to="/register"
-            className="block w-full px-4 py-2 bg-blue-500 text-white rounded-lg text-center hover:bg-blue-700 transition font-semibold"
-            onClick={() => setIsOpen(false)}
-          >
-            Register
-          </Link>
+
+          {/* Register Dropdown for Mobile */}
+          <details className="w-full">
+            <summary className="px-4 py-2 border-2 border-yellow-400 text-yellow-400 rounded-lg hover:bg-yellow-400 hover:text-white transition font-semibold flex items-center gap-2 cursor-pointer">
+              Register <ChevronDown size={16} className="text-yellow-400" />
+            </summary>
+            <div className="mt-2 w-full bg-white rounded-lg shadow-lg">
+              <Link
+                to="/student-enroll"
+                className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-yellow-50 hover:text-yellow-400 transition"
+                onClick={() => setIsOpen(false)}
+              >
+                <GraduationCap size={16} className="text-yellow-400" /> As a Student
+              </Link>
+              <Link
+                to="/tutor-register"
+                className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-yellow-50 hover:text-yellow-400 transition"
+                onClick={() => setIsOpen(false)}
+              >
+                <User size={16} className="text-yellow-400" /> As a Tutor
+              </Link>
+            </div>
+          </details>
         </div>
       )}
     </nav>

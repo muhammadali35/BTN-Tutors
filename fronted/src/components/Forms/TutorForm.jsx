@@ -4,8 +4,8 @@ import { User, Mail, Lock, Phone, GraduationCap, BookOpen, AlertCircle, Plus, X,
 import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import TermsModal from '../TermsModell';
-import Breadcrumb from '../../components/Breadcrumb';
+import TermsModal from './TermsModel';
+import Breadcrumb from '../Breadcrumb';
 import axios from 'axios';
 
 const TutorRegistration = () => {
@@ -156,7 +156,9 @@ const TutorRegistration = () => {
         }
       });
 
-      const response = await axios.post("http://localhost:5000/api/tutorReg", data, {
+  const API_URL = import.meta.env.VITE_API_URL;
+
+      const response = await axios.post(`${API_URL}/api/tutorReg`, data, {
         headers: { "Content-Type": "multipart/form-data" },
         timeout: 30000,
       });
