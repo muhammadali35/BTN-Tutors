@@ -9,14 +9,14 @@ import TestimonialSection from '../HomeSection/Testimonial'
 const Home = () => {
   return (
     <>
-    <Hero/>
-    <ServicesCard/>
-        <Institute/>
-    <EnrollSection/>
-        <WhyChooseUs/>
-      <TuitionModes/>
-    <TestimonialSection/>
-  
+      <Hero />
+      <ServicesCard />
+      <Institute />
+      <EnrollSection />
+      <WhyChooseUs />
+      <TuitionModes />
+      <TestimonialSection />
+
 
     </>
   )

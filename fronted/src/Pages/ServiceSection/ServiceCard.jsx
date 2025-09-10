@@ -15,10 +15,15 @@ function ServicesCard() {
 
   const [services, setServices] = useState([]);
 
+   // ✅ Vite Environment Variable
+  const API_URL = import.meta.env.VITE_API_URL;
+  
+  
+
   // ✅ Fetch services from API
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/service")
+      .get(`${API_URL}/api/service`)
       .then((res) => {
         const data = res.data;
 
@@ -96,7 +101,7 @@ function ServicesCard() {
                 <img
                   src={
                     service.image
-                      ? `http://localhost:5000/uploads/${service.image}`
+                      ? `${API_URL}/uploads/${service.image}`
                       : Alevel
                   }
                   alt={service.title}

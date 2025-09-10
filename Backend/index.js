@@ -8,6 +8,7 @@ import contactRouter from "./routes/contactRoutes.js";
 import TestimonialRouter from "./routes/testimonialRoutes.js";
 import feeRoutes from './routes/fee.routes.js'; // ✅ Correct name
 import analyticsRoutes from "./routes/analytics.js";
+import blogRoutes from './routes/blogRoutes.js'; // ✅ New blog routes
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -61,7 +62,7 @@ app.use("/api", contactRouter);
 app.use("/api", TestimonialRouter);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/fees', feeRoutes);
-
+app.use('/api', blogRoutes); // All blog routes under /api/blog
 
 
 
