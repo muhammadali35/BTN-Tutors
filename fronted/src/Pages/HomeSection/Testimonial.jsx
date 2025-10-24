@@ -21,16 +21,16 @@ const TestimonialSection = () => {
   }, []);
 
   const dummyImage =
-    "https://cdn-icons-png.flaticon.com/512/847/847969.png"; // Trimmed space
+    "https://cdn-icons-png.flaticon.com/512/847/847969.png"; 
 
   return (
     <section className="py-16 bg-white">
       <div className="text-center mb-14 px-4">
         <h2 className="text-2xl md:text-4xl font-bold text-blue-500 mb-4 leading-tight">
-          Student <span className="text-yellow-400"> & Parent Feedback</span>
+          Student  <span className="text-yellow-400"> & Parent Response Sentence</span>
         </h2>
         <p className="text-gray-600 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
-          Don't just take our words for it – Take theirs
+          Our learners & parents trust us because we provide outcomes. Read actual reviews from students who enhanced their grades & built confidence through our <span className="text-yellow-400 font-bold">home tutor & online tutoring</span>  degree programs.
         </p>
       </div>
 

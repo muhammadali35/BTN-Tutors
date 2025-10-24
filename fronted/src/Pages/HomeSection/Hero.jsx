@@ -9,11 +9,11 @@ import hero3 from "../../assets/successStu.jpg";
 
 const heroSlides = [
   {
-    title: "Empowering Students",
-    subTitle:"with Expert Tutors",
-    desc: "Discover the best Home and Online Tutors for all Subjects and Classes near your area Today!",
-    btn1: { text: "Find a Tutor", link: "/student-enroll" },
-    btn2: { text: "Become a Tutor", link: "/tutor-register" },
+    title: "Your Success ",
+    subTitle:"is Our Focus",
+    desc: "We support you in connecting with the best home tutor, whom you can trust, and who Support online tutoring services, in WHATEVER way you need— Whether you are looking to excel in school, your board exam or becoming a master in a subject. Whatever the student’s need may be to achieve, our tutors are academically qualified and work and either at home or online remotely, to help ensure your students learning success.",
+    btn1: { text: "Book a Free Demo", link: "/student-enroll" },
+    btn2: { text: "Apply as Tutor", link: "/tutor-register" },
     bg: hero1,
   },
   {
@@ -41,7 +41,7 @@ const Hero = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % heroSlides.length);
-    }, 2000);
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 

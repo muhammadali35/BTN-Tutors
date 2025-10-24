@@ -45,12 +45,13 @@ const Institute = () => {
             Our Educators
           </p>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-500 mt-2 leading-tight">
-            Expert Teachers from Pakistan's Premier{" "}
-            <span className="text-yellow-400">Educational Institutions</span>
+            Expert Teachers  <span className="text-yellow-400">from Famous Schools</span> in Pakistan
+          
+           
           </h2>
           <div className="w-20 h-0.5 bg-yellow-400 mx-auto my-4"></div>
-          <p className="text-gray-600 text-sm sm:text-base leading-relaxed px-4">
-            Our teaching staff comprises highly qualified educators from Pakistan's most prestigious schools and colleges, bringing years of experience and expertise to deliver exceptional education.
+          <p className="text-gray-600 text-sm sm:text-base leading-relaxed px-4 text-center">
+           At Best Teacher's Network, our home tutor and online tutoring instructors or course instructors are selected from Pakistan's most notable educational institutions, such as LGS, Beaconhouse, and KIPS Institute. Each teacher selected to work for Best Teacher's Network contributes a level of proven experience, hard work and honesty focused on serving students to achieve the best academic achievement possible.
           </p>
         </div>
 

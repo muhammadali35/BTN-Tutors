@@ -3,6 +3,7 @@ import { Phone, Mail, MessageCircle } from "lucide-react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 const contactInfo = [
   {
     icon: Phone,
@@ -15,7 +16,7 @@ const contactInfo = [
     icon: MessageCircle,
     title: "WhatsApp",
     value: "0336 1016020",
-    link: "https://wa.me/923361016020",
+    link: "https://wa.me/923361016020", // Fixed extra spaces
     display: "💬 0336 1016020",
   },
   {
@@ -32,40 +33,47 @@ const ContactPage = () => {
   const [email, setEmail] = React.useState("");
   const [subject, setSubject] = React.useState("");
   const [message, setMessage] = React.useState("");
-  console.log(name, email, subject, message);
+  const [loading, setLoading] = React.useState(false); // Optional: for UX
 
   const API_URL = import.meta.env.VITE_API_URL;
 
-
-  const submitHhandler = async (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
+    if (!name || !email || !subject || !message) {
+      toast.error("❌ All fields are required!", {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+        style: { background: "#E23E32", color: "white" },
+      });
+      return;
+    }
+
+    setLoading(true);
     try {
-      const res = axios.post(`${API_URL}/api/contact`, {
+      const res = await axios.post(`${API_URL}/api/contact`, {
         name,
         email,
         subject,
         message,
       });
-      toast.dismiss();
-      setTimeout(() => {
-        toast.success("✅ Message sent successful! We will contact you soon.", {
-          position: "top-center",
-          autoClose: 2000,
-          theme: "colored",
-          style: { background: "#10b981", color: "white" },
-        });
-      },);
 
+      toast.success("✅ Message sent successfully! We will contact you soon.", {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+        style: { background: "#10b981", color: "white" },
+      });
+
+      // Reset form
       setName("");
       setEmail("");
       setSubject("");
       setMessage("");
-      console.log(res);
     } catch (error) {
-      toast.dismiss();
-      console.log("❌ API Error:", error.response);
+      console.error("❌ API Error:", error.response?.data || error.message);
       toast.error(
-        error.response?.data?.message || "❌ Message not sent. Try again!",
+        error.response?.data?.message || "❌ Message not sent. Please try again!",
         {
           position: "top-center",
           autoClose: 2000,
@@ -73,11 +81,15 @@ const ContactPage = () => {
           style: { background: "#E23E32", color: "white" },
         }
       );
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <section className="bg-gray-50 py-16 px-6 md:px-12 lg:px-20 font-sans">
+      <ToastContainer />
+
       <div className="max-w-6xl mx-auto">
         {/* Heading */}
         <div className="text-center mb-12">
@@ -85,26 +97,24 @@ const ContactPage = () => {
             Contact <span className="text-yellow-400">Us</span>
           </h2>
           <p className="text-gray-600 mt-4">
-            We’re glad to have you around. Reach out to us and we’ll connect
-            with you as soon as possible.
+            We’re glad to have you around. Reach out to us and we’ll connect with you as soon as possible.
           </p>
         </div>
 
         {/* Contact Info */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 cursor-pointer ">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 cursor-pointer">
           {contactInfo.map((item, index) => (
             <div
               key={index}
-              
-              className="flex flex-col items-center bg-white shadow-md rounded-xl p-6 hover:shadow-lg transition border border-yellow-400 group "
+              className="flex flex-col items-center bg-white shadow-md rounded-xl p-6 hover:shadow-lg transition border border-yellow-400 group"
             >
               <item.icon className="w-10 h-10 text-yellow-400 mb-3" />
-              <h3 className="text-lg font-semibold text-black ">{item.title}</h3>
+              <h3 className="text-lg font-semibold text-black">{item.title}</h3>
               <a
                 href={item.link}
                 target={item.title === "WhatsApp" ? "_blank" : "_self"}
                 rel="noopener noreferrer"
-                className="text-gray-600  hover:text-yellow-400 mt-2 font-medium"
+                className="text-gray-600 hover:text-yellow-400 mt-2 font-medium"
               >
                 {item.display}
               </a>
@@ -113,12 +123,11 @@ const ContactPage = () => {
         </div>
 
         {/* Contact Form */}
-        <div className="bg-gay-50  border border-yellow-400 shadow-md rounded-xl p-8">
-
+        <div className="bg-gray-50 border border-yellow-400 shadow-md rounded-xl p-8"> {/* Fixed typo: bg-gay-50 → bg-gray-50 */}
           <h3 className="text-2xl font-bold text-blue-500 mb-6">
             Send Us <span className="text-yellow-400">a Message</span>
           </h3>
-          <form className="space-y-6" onSubmit={submitHhandler}>
+          <form className="space-y-6" onSubmit={submitHandler}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <input
                 type="text"
@@ -126,6 +135,7 @@ const ContactPage = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none"
+                required
               />
               <input
                 type="email"
@@ -133,6 +143,7 @@ const ContactPage = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none"
+                required
               />
             </div>
             <input
@@ -141,6 +152,7 @@ const ContactPage = () => {
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
               className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none"
+              required
             />
             <textarea
               rows="5"
@@ -148,12 +160,18 @@ const ContactPage = () => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none"
+              required
             ></textarea>
             <button
               type="submit"
-              className="px-6 py-3 bg-yellow-400 text-white font-semibold rounded-lg shadow hover:bg-yellow-500 transition"
+              disabled={loading}
+              className={`px-6 py-3 font-semibold rounded-lg shadow transition ${
+                loading
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-yellow-400 text-white hover:bg-yellow-500"
+              }`}
             >
-              Send Message
+              {loading ? "Sending..." : "Send Message"}
             </button>
           </form>
         </div>

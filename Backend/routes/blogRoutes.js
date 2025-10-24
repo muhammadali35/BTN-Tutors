@@ -7,15 +7,14 @@ import {
   updateBlog,
   deleteBlog
 } from '../controllers/blogController.js';
-import upload from '../middlewere/multer.js'; 
+import uploadMultiple from '../middlewere/multerMultiple.js';
 
 const router = express.Router();
 
-// Routes
-router.post('/blog', upload.single("img"), addBlog);       // ✅ Create
-router.get('/blog', getBlogs);                             // ✅ Read All
-router.get('/blog/:id', getBlogById);                      // ✅ Read Single
-router.put('/blog/:id', upload.single("img"), updateBlog); // ✅ Update
-router.delete('/blog/:id', deleteBlog);                    // ✅ Delete
+router.post('/blog', uploadMultiple.any(), addBlog);
+router.get('/blog', getBlogs);
+router.get('/blog/:id', getBlogById);
+router.put('/blog/:id', uploadMultiple.any(), updateBlog);
+router.delete('/blog/:id', deleteBlog);
 
 export default router;

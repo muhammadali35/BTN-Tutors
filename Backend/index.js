@@ -1,3 +1,5 @@
+// index.js
+
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
@@ -6,13 +8,16 @@ import tutorRouter from "./routes/tutorRoute.js";
 import serviceRouter from "./routes/serviceRoute.js";
 import contactRouter from "./routes/contactRoutes.js";
 import TestimonialRouter from "./routes/testimonialRoutes.js";
-import feeRoutes from './routes/fee.routes.js'; // ✅ Correct name
+import feeRoutes from './routes/fee.routes.js';
 import analyticsRoutes from "./routes/analytics.js";
-import blogRoutes from './routes/blogRoutes.js'; // ✅ New blog routes
+import blogRoutes from './routes/blogRoutes.js';
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
+import http from "http";
 
+// ✅ Socket import karo (sahi path ke sath)
+import io from "./utils/socket.js"; // 👈 yeh line important hai
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,32 +25,33 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 
 const app = express();
-app.use(express.json());
-// ✅ Increase JSON payload limit to 10MB
-app.use(express.json({ limit: "10mb" }));
+const server = http.createServer(app);
 
-// ✅ Increase URL-encoded data limit (if using form data)
+// ✅ Socket.IO ko server se joro
+io.attach(server);
+
+// ✅ Ab io use karo
+io.on("connection", (socket) => {
+  console.log("✅ Admin connected:", socket.id);
+  socket.on("disconnect", () => {
+    console.log("❌ Disconnected:", socket.id);
+  });
+});
+
+// Middleware
+app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 app.use(
   cors({
-   origin: [
-    'http://localhost:5173',
-    'http://localhost:5174', // ← Add this!
-  ],
+    origin: ['http://localhost:5173', 'http://localhost:5174'],
     credentials: true,
   })
 );
 
-// Middleware to parse JSON
-app.use(express.json());
-app.use('/uploads', express.static('uploads'));
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-console.log("Uploads folder path:", path.join(__dirname, "uploads"));
+app.use('/uploads', express.static(path.join(__dirname, "uploads")));
 
-
-
-// ✅ MongoDB connection
+// MongoDB
 mongoose
   .connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
@@ -54,7 +60,7 @@ mongoose
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-// ✅ Routes
+// Routes
 app.use("/api", studentRouter);
 app.use("/api", serviceRouter);
 app.use("/api", tutorRouter);
@@ -62,9 +68,7 @@ app.use("/api", contactRouter);
 app.use("/api", TestimonialRouter);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/fees', feeRoutes);
-app.use('/api', blogRoutes); // All blog routes under /api/blog
-
-
+app.use('/api', blogRoutes);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+server.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

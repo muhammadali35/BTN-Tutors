@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
-import DOMPurify from 'dompurify';
 
 const BlogDetail = () => {
   const { id } = useParams();
@@ -12,7 +11,6 @@ const BlogDetail = () => {
 
   const API_URL = import.meta.env.VITE_API_URL;
 
-  // Fetch blog from API
   useEffect(() => {
     const fetchBlog = async () => {
       try {
@@ -21,37 +19,39 @@ const BlogDetail = () => {
         setBlog(res.data);
         setError(null);
       } catch (err) {
-        console.error("Failed to fetch blog:", err);
-        setError("Blog not found or failed to load.");
+        console.error('Failed to fetch blog:', err);
+        setError('Blog not found or failed to load.');
         setBlog(null);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchBlog();
+    if (id) fetchBlog();
   }, [id]);
 
-  // Loading Skeleton
+  // Loading skeleton
   if (loading) {
     return (
-      <section className="py-24 bg-gray-50 min-h-screen">
+      <section className="py-16 md:py-24 bg-gray-50 min-h-screen">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="animate-pulse space-y-8">
-            <div className="h-60 sm:h-72 md:h-96 bg-gray-200 rounded-2xl"></div>
-            <div className="bg-white p-6 sm:p-8 rounded-2xl space-y-5">
-              <div className="h-7 bg-gray-200 rounded w-2/3"></div>
-              <div className="flex gap-3 flex-wrap">
-                <div className="h-6 bg-gray-200 rounded w-20"></div>
+          <div className="mb-6">
+            <div className="h-6 w-32 bg-gray-200 rounded animate-pulse"></div>
+          </div>
+          <div className="animate-pulse space-y-6">
+            <div className="h-64 sm:h-80 md:h-96 bg-gray-200 rounded-2xl"></div>
+            <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-gray-200 space-y-5">
+              <div className="h-8 bg-gray-200 rounded w-2/3"></div>
+              <div className="flex flex-wrap gap-2">
                 <div className="h-6 bg-gray-200 rounded w-24"></div>
+                <div className="h-6 bg-gray-200 rounded w-32"></div>
               </div>
-              <div className="h-4 bg-gray-200 rounded w-full"></div>
-              <div className="h-4 bg-gray-200 rounded w-5/6"></div>
-            </div>
-            <div className="bg-white p-6 sm:p-8 rounded-2xl space-y-4">
-              <div className="h-4 bg-gray-200 rounded w-full"></div>
-              <div className="h-4 bg-gray-200 rounded w-5/6"></div>
-              <div className="h-4 bg-gray-200 rounded w-4/6"></div>
+              <div className="space-y-4">
+                <div className="h-4 bg-gray-200 rounded w-full"></div>
+                <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                <div className="h-4 bg-gray-200 rounded w-4/5"></div>
+                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -59,18 +59,18 @@ const BlogDetail = () => {
     );
   }
 
-  // Error State
+  // Error state
   if (error || !blog) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 py-20 px-4 text-center">
-        <div className="text-8xl mb-6 animate-bounce opacity-30">📰</div>
-        <p className="text-red-500 font-bold text-2xl mb-4">Blog Not Found</p>
+        <div className="text-7xl mb-6 opacity-40 text-yellow-400">📰</div>
+        <p className="text-red-600 font-bold text-2xl mb-3">Blog Not Found</p>
         <p className="text-gray-600 mb-8 max-w-md">
           {error || "The blog you're looking for doesn't exist or may have been removed."}
         </p>
         <Link
           to="/blog"
-          className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+          className="px-6 py-3 bg-blue-600 text-white font-medium rounded-full hover:bg-blue-700 transition-all shadow-md hover:shadow-lg"
         >
           ← Back to Blogs
         </Link>
@@ -78,8 +78,7 @@ const BlogDetail = () => {
     );
   }
 
-  // ✅ Use only the published date (from admin panel)
-  const publishedDate = blog.date 
+  const publishedDate = blog.date
     ? new Date(blog.date).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
@@ -87,63 +86,87 @@ const BlogDetail = () => {
       })
     : 'Date not available';
 
-  const cleanDescription = DOMPurify.sanitize(blog.desc || '');
+  const renderBlocks = (blocks) => {
+    if (!Array.isArray(blocks)) return null;
+    return blocks.map((block, index) => {
+      if (block.type === 'text') {
+        return (
+          <p
+            key={index}
+            className="mb-6 text-gray-700 leading-relaxed text-base sm:text-lg"
+          >
+            {block.content}
+          </p>
+        );
+      }
+      if (block.type === 'subtitle') {
+        return (
+          <h3
+            key={index}
+            className="text-xl sm:text-2xl font-semibold text-gray-800 my-8 pl-4 border-l-4 border-yellow-400"
+          >
+            {block.content}
+          </h3>
+        );
+      }
+      if (block.type === 'image') {
+        return (
+          <div key={index} className="my-10">
+            <img
+              src={block.url}
+              alt={`Blog illustration ${index + 1}`}
+              className="w-full h-auto max-h-[600px] object-cover rounded-2xl shadow-md border border-gray-200"
+              loading="lazy"
+              onError={(e) => {
+                e.target.src = 'https://via.placeholder.com/1200x600/e5e7eb/9ca3af?text=Image+Not+Available';
+                e.target.alt = 'Image not available';
+              }}
+            />
+          </div>
+        );
+      }
+      return null;
+    });
+  };
 
   return (
-    <section className="py-12 lg:py-20 bg-gray-50 min-h-screen">
-      <div className="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10">
-
-        {/* ✅ Back Button - Top Left */}
+    <section className="py-12 md:py-20 bg-gray-50 min-h-screen">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Back Button */}
         <div className="mb-8">
           <Link
             to="/blog"
-            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-blue-700 bg-white border border-blue-300 rounded-full hover:bg-blue-50 transition-shadow duration-200 shadow-sm hover:shadow"
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-blue-600 bg-white border border-blue-200 rounded-full hover:bg-blue-50 transition-all duration-200 shadow-sm"
           >
             ← Back to Blogs
           </Link>
         </div>
 
-        {/* Hero Image */}
-        <div className="relative mb-10 rounded-2xl overflow-hidden shadow-xl">
-          <img
-            src={blog.img || 'https://via.placeholder.com/1200x600/6B7280/FFFFFF?text=No+Image'}
-            alt={blog.title}
-            className="w-full h-60 sm:h-72 md:h-80 lg:h-96 object-cover object-center transition-transform duration-700 hover:scale-105"
-            onError={(e) => {
-              e.target.src = "https://via.placeholder.com/1200x600/6B7280/FFFFFF?text=Image+Not+Available";
-            }}
-          />
-        </div>
-
-        {/* Blog Content */}
-        <article className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 md:p-10 border border-gray-100">
-
-          {/* Category & Published Date */}
-          <div className="flex flex-wrap items-center gap-3 mb-6">
-            <span className="px-4 py-1.5 bg-indigo-600 text-white text-sm font-semibold rounded-full">
+        {/* Blog Card */}
+        <article className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200">
+          {/* Category & Date */}
+          <div className="px-6 pt-6 flex flex-wrap items-center gap-3">
+            <span className="px-4 py-2 bg-yellow-400 text-white text-xs font-semibold rounded-full">
               {blog.category}
             </span>
-            <span className="text-gray-500 text-sm flex items-center">
-              <svg className="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 2h6v1H6V4zm0 3h6v8H6V7z" clipRule="evenodd" />
+            <span className="flex items-center px-4 py-2 bg-gray-100 text-gray-700 text-xs font-medium rounded-full">
+              <svg className="w-3.5 h-3.5 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1z" />
               </svg>
-              {/* ✅ Only Published Date */}
               {publishedDate}
             </span>
           </div>
 
           {/* Title */}
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-7 leading-tight">
+          <h1 className="px-6 pt-5 pb-6 text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
             {blog.title}
           </h1>
 
-          {/* Description */}
-          <div
-            className="prose prose-lg prose-blue max-w-none text-gray-700 leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: cleanDescription }}
-          />
+          {/* Content */}
+          <div className="px-6 pb-10 prose prose-gray max-w-none">
+            {renderBlocks(blog.blocks)}
+          </div>
         </article>
-
       </div>
     </section>
   );

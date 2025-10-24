@@ -9,25 +9,24 @@ const blogModel = new Schema({
     trim: true,
     maxlength: 200
   },
-  desc: {
-    type: String,
-    required: true,
-    trim: true,
-    maxlength: 5000
-  },
-  img: {
-    type: String,
-    required: false
-  },
-  date: {
-    type: String, // You can also use Date if preferred
-    required: false
-  },
   category: {
     type: String,
     required: true,
     trim: true
   },
+  date: {
+    type: String,
+    required: false
+  },
+  blocks: [{
+    type: {
+      type: String,
+      enum: ['text', 'subtitle', 'image'],
+      required: true
+    },
+    content: String, // for text/subtitle
+    url: String      // for image
+  }],
   createdAt: {
     type: Date,
     default: Date.now

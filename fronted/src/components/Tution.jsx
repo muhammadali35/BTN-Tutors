@@ -8,29 +8,44 @@ function TuitionModes() {
     {
       icon: <Home className="w-10 h-10 text-yellow-400" />,
       title: "Home Tuition",
-      desc: "Get personalized face-to-face tutoring at your home for better focus and comfort.",
+      desc: "Receive personalized tuition at your home.",
       img: homeTution,
       overlay: "bg-black/40",
     },
     {
       icon: <Laptop className="w-10 h-10 text-yellow-400" />,
       title: "Online Tuition",
-      desc: "Learn from anywhere in Pakistan with our verified online tutors using digital tools.",
+      desc: "Any time, anywhere convenience of live online learning with expert teachers.",
       img: onlineTution,
       overlay: "bg-black/40",
     },
   ];
 
   return (
-    <section className="relative bg-white pb-14 font-sans">
+    <section
+      className="relative bg-white pb-14 font-sans"
+      style={{ fontFamily: '"Inter", sans-serif' }}
+    >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Title */}
         <div className="text-center mb-10 sm:mb-14">
-          <h2 className="text-3xl md:text-4xl font-bold text-blue-500 mb-4 leading-tight">
+          <h2
+            className="font-bold text-blue-500 mb-4"
+            style={{
+              fontSize: 'clamp(1.875rem, 5vw, 2.25rem)', // 30px → 36px
+              lineHeight: '1.25',
+            }}
+          >
             Tuition Modes <span className="text-yellow-400">We Offer</span>
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-base sm:text-lg leading-relaxed">
-            We provide flexible options to match your learning style — choose between home tutoring or online sessions.
+          <p
+            className="text-gray-600 max-w-2xl mx-auto"
+            style={{
+              fontSize: 'clamp(1rem, 3vw, 1.125rem)', // 16px → 18px
+              lineHeight: '1.65',
+            }}
+          >
+            Choose the best learning methodology. Either in the comfort of your home by our expert home tutor, or through the web in a lively and engaging online tutoring experience. Both these channels shall ensure that you avail of proper learning and follow-up.
           </p>
         </div>
 
@@ -39,26 +54,30 @@ function TuitionModes() {
           {modes.map((mode, index) => (
             <div
               key={index}
-              className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 group aspect-w-16 aspect-h-10 sm:aspect-h-12 h-64 sm:h-72 md:h-80"
+              className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 group h-64 sm:h-72 md:h-80"
             >
-              {/* Background Image */}
               <img
                 src={mode.img}
                 alt={mode.title}
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 loading="lazy"
               />
-
-              {/* Overlay */}
               <div className={`absolute inset-0 ${mode.overlay}`}></div>
-
-              {/* Content */}
               <div className="relative z-10 flex flex-col items-center justify-center h-full px-5 py-6 text-center text-white">
                 <div className="flex justify-center mb-3 sm:mb-4">{mode.icon}</div>
-                <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-yellow-400 group-hover:text-yellow-300 transition-colors duration-300">
+                <h3
+                  className="font-bold text-yellow-400 group-hover:text-yellow-300 transition-colors duration-300 mb-3 sm:mb-4"
+                  style={{ fontSize: 'clamp(1.25rem, 4vw, 1.5rem)' }} // 20px → 24px
+                >
                   {mode.title}
                 </h3>
-                <p className="text-white leading-relaxed text-sm sm:text-base px-2">
+                <p
+                  className="text-white px-2"
+                  style={{
+                    fontSize: 'clamp(0.875rem, 2.8vw, 1rem)', // 14px → 16px
+                    lineHeight: '1.5',
+                  }}
+                >
                   {mode.desc}
                 </p>
               </div>

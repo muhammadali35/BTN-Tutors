@@ -1,212 +1,187 @@
-import React, { useState } from 'react';
-import { Twitter, Facebook, Instagram, Linkedin, Mail, CheckCircle, XCircle } from 'lucide-react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+// src/components/Footer.jsx
+import React from 'react';
+import { 
+  Phone, 
+  MapPin, 
+  Mail, 
+  Twitter, 
+  Facebook, 
+  Instagram, 
+  Linkedin 
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
-  const [email, setEmail] = useState('');
-  const [isValid, setIsValid] = useState(true);
-
-  const validateEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validateEmail(email)) {
-      setIsValid(true);
-      toast.success('Thank you! Your subscription was successful.', {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-      setTimeout(() => setEmail(''), 1000);
-    } else {
-      setIsValid(false);
-      toast.error('Please enter a valid email address.', {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }
-  };
-
-  const handleEmailChange = (e) => {
-    const value = e.target.value;
-    setEmail(value);
-    setIsValid(value === '' ? true : validateEmail(value));
-  };
-
-  // ✅ Quick Links Data
   const quickLinks = [
     { name: 'About Us', path: '/about' },
+    { name: 'Services', path: '/services' },
     { name: 'Contact Us', path: '/contact' },
-    { name: 'Careers', path: '/careers' },
-    { name: 'News & Articles', path: '/news' },
-    { name: 'Private Policy', path: '/privacy' },
+    { name: 'News & Articles', path: '/blog' },
   ];
 
-  // ✅ Services Data
   const services = [
-    { name: 'Home Tuition', path: '/home-tuition' },
-    { name: 'O/A Level', path: '/o-a-level' },
-    { name: 'Home Tutor', path: '/home-tutor' },
-    { name: 'Spoken English', path: '/spoken-english' },
-    { name: 'Online Tutoring', path: '/online-tutoring' },
+    { name: 'Home Tuition', path: '/services' },
+    { name: 'O/A Level', path: '/services' },
+    { name: 'Home Tutor', path: '/services' },
+    { name: 'Spoken English', path: '/services' },
+    { name: 'Online Tutoring', path: '/services' },
   ];
 
-  // ✅ Social Icons Data
+  const contactInfo = [
+    {
+      icon: Phone,
+      label: "WhatsApp",
+      value: "+92 300 1234567",
+      href: "https://wa.me/923001234567",
+    },
+    {
+      icon: MapPin,
+      label: "Location",
+      value: "Admin Office, Lahore, Pakistan",
+      href: "https://maps.google.com/?q=Admin+Office,+Islamabad",
+    },
+    {
+      icon: Mail,
+      label: "Email",
+      value: "admin@nonly.com",
+      href: "mailto:admin@nonly.com",
+    },
+  ];
+
   const socials = [
-    { icon: Twitter, color: 'bg-blue-400 hover:bg-yellow-400', path: '/twitter' },
-    { icon: Facebook, color: 'bg-blue-400 hover:bg-yellow-400', path: '/facebook' },
-    { icon: Instagram, color: 'bg-blue-400 hover:bg-yellow-400', path: '/instagram' },
-    { icon: Linkedin, color: 'bg-blue-400 hover:bg-yellow-400', path: '/linkedin' },
+    { icon: Twitter, path: "https://twitter.com" },
+    { icon: Facebook, path: "https://facebook.com" },
+    { icon: Instagram, path: "https://instagram.com" },
+    { icon: Linkedin, path: "https://linkedin.com" },
   ];
 
   return (
-    <footer className="bg-blue-500 text-white py-12 relative">
-      <ToastContainer />
-
+    <footer
+      className="bg-blue-500 text-white py-12 relative font-sans"
+      style={{ fontFamily: '"Inter", sans-serif' }}
+    >
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        {/* Grid: Responsive 1 → 2 → 4 columns */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
           
-          {/* Logo and Description */}
-          <div className="col-span-1 md:col-span-1">
+          {/* Column 1: Logo + Description */}
+          <div className="lg:pr-4">
             <div className="flex flex-col items-center md:items-start">
-              <div className="mb-4">
-                <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white">
-                  <path d="M50 20C40 20 30 28 30 38V60H70V38C70 28 60 20 50 20Z" fill="currentColor"/>
-                  <path d="M30 60L50 80L70 60" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <circle cx="50" cy="30" r="10" fill="currentColor"/>
-                </svg>
-              </div>
-              <Link to="/" className="text-lg font-semibold mb-2 hover:text-yellow-400 transition-colors duration-300">
+              <Link to="/" className="text-xl font-bold mb-3 hover:text-yellow-400 transition-colors">
                 Best Teachers Network
               </Link>
-              <p className="text-white text-center md:text-left mb-6 max-w-xs hover:text-yellow-400 transition-colors duration-300">
-                Best Teachers Network is the best Online Academy in Pakistan for home tuition.
+              <p
+                className="text-white/90 text-center md:text-left mb-6"
+                style={{
+                  fontSize: 'clamp(0.875rem, 2.8vw, 1rem)',
+                  lineHeight: '1.55',
+                }}
+              >
+                Making quality education accessible across Pakistan with expert home & online tutors.
               </p>
 
-              {/* Social Icons using map */}
-              <div className="flex space-x-4 justify-center md:justify-start">
-                {socials.map((social, index) => (
-                  <Link
+              {/* Social Icons */}
+              <div className="flex space-x-3">
+                {socials.map((item, index) => (
+                  <a
                     key={index}
-                    to={social.path}
-                    className={`w-10 h-10 ${social.color} rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110 group `}
+                    href={item.path}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 bg-white/20 hover:bg-yellow-400 rounded-full flex items-center justify-center transition-all duration-300 group"
+                    aria-label={`${item.icon.name} link`}
                   >
-                    <social.icon className="w-5 h-5 group-hover:text-white" />
-                  </Link>
+                    <item.icon className="w-5 h-5 text-white group-hover:text-white" />
+                  </a>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* Quick Links using map */}
-          <div className="py-4">
-            <h3 className="text-lg font-semibold mb-4 flex items-center">
-              <span className="hover:text-yellow-400 transition-colors duration-300 cursor-pointer">Quick Links</span>
-              <span className="w-12 h-1 bg-white ml-2"></span>
+          {/* Column 2: Quick Links */}
+          <div>
+            <h3 className="text-lg font-bold mb-5 flex items-center">
+              Quick Links
+              <span className="w-8 h-0.5 bg-yellow-400 ml-2"></span>
             </h3>
-            <ul className="space-y-3 ">
+            <ul className="space-y-2.5">
               {quickLinks.map((link, index) => (
                 <li key={index}>
                   <Link
                     to={link.path}
-                    className="text-white hover:text-yellow-400 transition-all duration-300 block group "
+                    className="text-white/90 hover:text-yellow-400 transition-colors block text-sm"
                   >
-                    <span className="relative">
-                      {link.name}
-                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
-                    </span>
+                    {link.name}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Services using map */}
-          <div className="py-4">
-            <h3 className="text-lg font-semibold mb-4 flex items-center">
-              <span className="hover:text-yellow-400 transition-colors duration-300 cursor-pointer">Services</span>
-              <span className="w-12 h-1 bg-white ml-2"></span>
+          {/* Column 3: Services */}
+          <div>
+            <h3 className="text-lg font-bold mb-5 flex items-center">
+              Our Services
+              <span className="w-8 h-0.5 bg-yellow-400 ml-2"></span>
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-2.5">
               {services.map((service, index) => (
                 <li key={index}>
                   <Link
                     to={service.path}
-                    className="text-white hover:text-yellow-400 transition-all duration-300 block group"
+                    className="text-white/90 hover:text-yellow-400 transition-colors block text-sm"
                   >
-                    <span className="relative">
-                      {service.name}
-                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
-                    </span>
+                    {service.name}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Newsletter */}
-          <div className="relative py-4">
-            <h3 className="text-lg font-semibold mb-4 flex items-center">
-              <span className="hover:text-yellow-400 transition-colors duration-300 cursor-pointer">Newsletter</span>
-              <span className="w-12 h-1 bg-white ml-2"></span>
+          {/* Column 4: Contact Info */}
+          <div>
+            <h3 className="text-lg font-bold mb-5 flex items-center">
+              Contact Us
+              <span className="w-8 h-0.5 bg-yellow-400 ml-2"></span>
             </h3>
-
-            <form onSubmit={handleSubmit} className="space-y-3">
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-500" />
-                <input
-                  type="email"
-                  placeholder="Enter Email Address"
-                  value={email}
-                  onChange={handleEmailChange}
-                  className={`w-full pl-12 pr-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white bg-opacity-10 backdrop-blur-sm placeholder-white transition-all duration-300 ${
-                    email && !isValid 
-                      ? 'border-red-500 focus:ring-red-500' 
-                      : 'border-blue-500 focus:ring-blue-500'
-                  }`}
-                  required
-                />
-                {email && !isValid && <XCircle className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-red-400" />}
-                {email && isValid && <CheckCircle className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-green-400" />}
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-yellow-400  hover:bg-yellow-400 hover:text-white text-white font-medium py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-              >
-                SUBSCRIBE
-              </button>
-            </form>
-            <p className="text-white text-sm mt-4 text-center hover:text-yellow-400 transition-colors duration-300 cursor-pointer">
-              Subscribe to our Newsletter and get the latest updates, News, and Offers.
-            </p>
+            <ul className="space-y-4">
+              {contactInfo.map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <li key={index} className="flex items-start">
+                    <div className="mt-0.5 mr-3 text-yellow-400">
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <p className="text-white text-xs font-bold uppercase tracking-wider">{item.label}</p>
+                      <a
+                        href={item.href}
+                        target={item.href.startsWith("http") ? "_blank" : "_self"}
+                        rel={item.href.startsWith("http") ? "noopener noreferrer" : ""}
+                        className="text-white hover:text-yellow-400 transition-colors font-medium block"
+                        style={{ fontSize: '0.9375rem' }}
+                      >
+                        {item.value}
+                      </a>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-blue-300 mt-8 pt-6 text-center text-sm">
-          <p className="text-white transition-colors duration-300">
-            Copyright © 2024{' '}
-            <Link to="/" className="font-bold text-yellow-400 hover:text-white transition-colors duration-300">
+        <div className="border-t border-blue-400/40 mt-12 pt-6 text-center">
+          <p className="text-white/80 text-sm">
+            Copyright © 2025{' '}
+            <Link to="/" className="font-semibold text-yellow-400 hover:text-white transition-colors">
               Pakistan Academy
-            </Link>{' '}
-            | All rights reserved | Designed by{' '}
-            <Link to="/" className="font-bold text-yellow-400 hover:text-white transition-colors duration-300">IT Advice</Link>
+            </Link>
+            {' '}| All rights reserved | Designed by{' '}
+            <Link to="/" className="font-semibold text-yellow-400 hover:text-white transition-colors">
+              Wali Haider Jalali
+            </Link>
           </p>
         </div>
       </div>

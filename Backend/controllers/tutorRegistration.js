@@ -2,6 +2,10 @@
 import tutorSchema from "../models/tutorModel.js";
 import bcrypt from 'bcrypt';
 
+// ✅ Real-time notification for admin
+import { emitNewRegistration } from "../utils/socket.js";
+import { sendAdminRegistrationEmail } from "../utils/sendEmail.js";
+
 /**
  * ✅ Register a new tutor
  * Includes CNIC validation and document upload support
@@ -82,31 +86,56 @@ export const registerTutor = async (req, res) => {
       : [];
 
     // Create new tutor
-    const newTutor = new tutorSchema({
-      name,
-      email,
-      password: hashedPassword,
-      mobile,
-      whatsapp,
-      city,
-      address,
-      institution,
-      experience,
-      bio,
-      subjects: parsedSubjects,
-      otherSubjects,
-      teachingMode,
-      cnicNumber,
-      profilePic,
-      idCardFront,
-      idCardBack,
-      Intermediate,
-      bachelorDoc,
-      mphilDoc,
-      status: "pending", // Default status
-    });
+ // Create new tutor
+const newTutor = new tutorSchema({
+  name,
+  email,
+  password: hashedPassword,
+  mobile,
+  whatsapp,
+  city,
+  address,
+  institution,
+  experience,
+  bio,
+  subjects: parsedSubjects,
+  otherSubjects,
+  teachingMode,
+  cnicNumber,
+  profilePic,
+  idCardFront,
+  idCardBack,
+  Intermediate,
+  bachelorDoc,
+  mphilDoc,
+  status: "pending",
+});
 
-    await newTutor.save();
+await newTutor.save();
+
+// ✅ ✨ YEH DONO LINES registerTutor FUNCTION KE ANDAR HONI CHAHIYE
+emitNewRegistration({
+  type: "tutor",
+  name: newTutor.name,
+  email: newTutor.email,
+  mobile: newTutor.mobile,
+  city: newTutor.city,
+  subjects: newTutor.subjects,
+  timestamp: new Date()
+});
+
+
+// ✅ Send email
+await sendAdminRegistrationEmail({
+  type: "Tutor",
+  name: newTutor.name,
+  email: newTutor.email,
+  mobile: newTutor.mobile,
+  city: newTutor.city,
+  subjects: newTutor.subjects
+});
+
+res.status(201).json({ message: "Tutor registered successfully" });
 
     // ✅ Optional: Send email notification to admin
     // import { sendAdminNotification } from "../utils/tutorEmail.js";
@@ -199,3 +228,5 @@ export const deleteTutor = async (req, res) => {
     res.status(500).json({ message: "Server error while deleting tutor" });
   }
 };
+
+
